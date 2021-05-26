@@ -327,8 +327,8 @@ const calculator = {
     for (let i = 0; i < 10; i++) {
       fast.push([48 + i, i]);
     }
-    var inArea = false,
-      selectionStart , inAreaOnly=false;
+    var placeInArea = false,
+      selectionStart , focusIn=false;
     function keys(event,areaVal) {
       const keyCodes = [
         [53, `%`, event.shiftKey],
@@ -371,7 +371,7 @@ const calculator = {
 		}
 		function insertKey(val,text) {
 			changeHistory2(text.join(``) + val);
-        if (inArea) {
+        if (placeInArea) {
           text.splice(selectionStart, 0, val);
           selectionStart += val.length;
           area.val(text.join(``));
@@ -404,19 +404,19 @@ const calculator = {
       changeHistory2($(this).val());
     });
     area.on(`focusout`, function () {
-			inAreaOnly=false;
+			focusIn=false;
       const prop_ = area.prop(`selectionStart`);
       if (prop_ != area.val().length) {
-        inArea = true;
+        placeInArea = true;
         selectionStart = prop_;
-      } else inArea = false;
+      } else placeInArea = false;
 		});
 		area.on(`focusin`,function () {
-			inAreaOnly=true;
+			focusIn=true;
 		})
     $(window).on(`keyup`, (event) => {
 			//	if ($(`.calculator`).attr(`active`)==`false`) return;
-			if (inAreaOnly) return;
+			if (focusIn) return;
       keys(event,area.val());
     });
   },
