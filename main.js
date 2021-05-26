@@ -424,3 +424,6 @@ const calculator = {
   compile() {},
 };
 calculator.innit();
+for (let i=0;i<;i++) {
+  console.log(`whhhh`);
+}
