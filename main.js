@@ -32,6 +32,7 @@ const inst = {
           $(`.system__cont-audio`).css({ display: "flex" });
           system.audio.render();
         } else {
+          $(`.black`).show();
           $(`video`).attr(`src`, `./videous/${text_}.mp4`);
           fast_(1);
           $(`.system__vid-attr`).css({ display: "flex" });
@@ -53,13 +54,23 @@ const inst = {
       return `0${taker}:${full < 10 ? `0` + full : full}`;
     }
   },
+  functionsFromObject(obj) {
+    Object.entries(obj).forEach(function (elem) {
+      if (typeof elem[1] == `function`) obj[elem[0]]();
+    });
+  },
+  resetBigElem(obj,elem){
+    elem.removeAttr(`style`).hide();
+        obj.move.activeMove = false;
+        elem.find(`[move]`).attr(`active`, false).removeAttr(`style`);
+  }
 };
 class Media {
   constructor(elem) {
-    this.type = document.querySelector(
-      elem.find(`video`).length != 0 ? `video` : `audio`
-    );
-    this.elem = elem;
+    this.elem = $(elem);
+    this.type = this.elem.find(`video`).length != 0 ? `video` : `audio`;
+    this.type=document.querySelector(elem+` `+this.type);
+    this.elem.currentTime=0;
     this.focus = false;
     this.input_ = this.elem.find(`[input]`);
     this.play = this.elem.find(`[type="pause"]`);
@@ -102,7 +113,7 @@ class Media {
       this.changeTime($(event.target));
     });
     //unique
-    if (this.elem.find(`[autoplay]`).attr(`attr`) == `audio`) {
+    if (this.elem.find(`[autoplay]`).attr(`attr`)== `audio`) {
       this.type.volume = 0.5;
       $(`#audio-regulation`).on(`change`, () => {
         this.type.volume = +$(`#audio-regulation`).val() / 100;
@@ -116,23 +127,39 @@ class Media {
         else if (key.which == 32) this.clickPlay();
       });
     }
+    this.elem.find(`.system__progress-bar`).on(`mouseenter`,function () {
+      $(this).hide()
+    })
+    this.elem.find(`.system__progress`).on(`mouseleave`,()=>{
+      this.elem.find(`.system__progress-bar`).show()
+    });
+    $(window).on(`resize`,()=>{
+      this.setBarLength()
+    })
   }
   render() {
     this.elem
       .find(`[type="pause"]`)
       .attr(`src`, inst.getDirection(`pause`))
       .attr(`active`, false);
-    this.type.addEventListener(`timeupdate`, () => {
+    this.type.addEventListener(`timeupdate`,()=>{
       this.elem
-        .find(`.current-time`)
-        .text(inst.convertTime(this.type.currentTime));
-      if (!this.focus)
-        this.input_.val((this.type.currentTime / this.type.duration) * 100);
+      .find(`.current-time`)
+      .text(inst.convertTime(this.type.currentTime));
+    if (!this.focus)
+      this.input_.val((this.type.currentTime / this.type.duration) * 100);
+      this.setBarLength()
     });
     this.type.addEventListener(`loadedmetadata`, () => {
       this.elem.find(`.all-time`).text(inst.convertTime(this.type.duration));
     });
     this.elem.find(`.current-time`).text(`00:00`);
+  }
+  setBarLength(){
+    this.value=this.elem.find(`.system__progress`).width()*(this.type.currentTime / this.type.duration);
+      this.elem.find(`.system__progress-bar`).css({width:
+        this.value-this.value*0.048
+      })
   }
 }
 class Move {
@@ -144,18 +171,30 @@ class Move {
       if (event.which == 1 && this.activeMove) this.focus = true;
       else this.focus = false;
       if (this.focus) {
+        var top=event.clientY , left=event.clientX;
+        const hei_=this.elem.height() , wid_=this.elem.width();
+        if (top<0) top=0;
+        else if (top+hei_>$(window).height()) top=$(window).height() - hei_;
+        if (left+wid_>$(window).width()) left=$(window).width() - wid_;
         this.elem.css({
-          top: event.clientY,
-          left: event.clientX,
+          top: top,
+          left: left,
         });
       }
     });
-    this.elem.find(`[move]`).on(`click`, () => {
-      const cur_ = JSON.parse(this.elem.find(`[move]`).attr(`active`));
-      if (cur_) this.elem.css({ cursor: "default" });
-      else this.elem.css({ cursor: "move" });
+    this.move=this.elem.find(`[move]`);
+    this.move.on(`click`, () => {
+      const cur_ = JSON.parse(this.move.attr(`active`));
+      if (cur_) {
+        this.elem.css({ cursor: "default" })
+        this.move.removeAttr(`style`)
+      }
+      else {
+        this.elem.css({ cursor: "move" })
+        this.move.css({background:`#F43F52`})
+      }
       this.activeMove = !cur_;
-      this.elem.find(`[move]`).attr(`active`, !cur_);
+      this.move.attr(`active`, !cur_);
     });
   }
 }
@@ -232,7 +271,10 @@ const system = {
           .attr(`src`, restoreMass[+$(this).attr(`index`)]);
         sort2_(2);
         $(type).attr(`src`, `#`);
-        if (type == `video`) $(`.system__vid-attr`).hide();
+        if (type == `video`) {
+          $(`.system__vid-attr`).hide();
+          $(`.black`).hide()
+        }
         else if (type == `audio`) $(`.system__cont-audio`).hide();
       }
       function sort2_(num) {
@@ -306,18 +348,24 @@ const system = {
         $(`.calculator`).show().attr(`active`, true);
       },
       () => {
-        $(`.calculator`).removeAttr(`style`).hide();
-        calculator.move.activeMove = false;
-        $(`.calculator__move`).attr(`active`, false);
+        inst.resetBigElem(calculator,$(`.calculator`))
       },
     ],
+    [
+      `game`,
+      ()=>{
+        $(`.game`).css({display:"flex"}).attr(`active`,true);
+        game.innit();
+      },
+      ()=>{
+        inst.resetBigElem(game,$(`.game`));
+      }
+    ]
   ],
-  video: new Media($(`.system__video-big`)),
-  audio: new Media($(`.system__sounds`)),
+  video: new Media(`.system__video-big`),
+  audio: new Media(`.system__sounds`)
 };
-Object.entries(system).forEach(function (elem) {
-  if (typeof elem[1] == `function`) system[elem[0]]();
-});
+inst.functionsFromObject(system);
 const calculator = {
   innit() {
     var history = [``],
@@ -345,9 +393,9 @@ const calculator = {
         [80, `Pi`],
         [76, `log()()`],
         [83, `()&#8730;()`],
-        [187, calculator.compile(), event.altKey], //=
-        [72, moveHistory(), event.altKey], //h
-				[82, clear(), event.altKey] //r
+        [187, goToCompile, event.altKey], //=
+        [72, moveHistory, event.altKey], //h
+        [82, clear, event.altKey], //r
       ];
       keyCodes.forEach(function (elem) {
         if (elem.length == 2) elem.push(true);
@@ -361,7 +409,11 @@ const calculator = {
       }
     }
     function moveHistory() {
-      if (!history.length) return;
+      if (!history.length) {
+        if (area.val().length==1)
+        area.val(``);
+        return;
+      }
       if (!changeHistory) history.pop();
       if (!history.length) area.val(``);
       else {
@@ -370,7 +422,7 @@ const calculator = {
       }
 		}
 		function insertKey(val,text) {
-			changeHistory2(text.join(``) + val);
+			changeHistoryFunc(text.join(``) + val);
         if (placeInArea) {
           text.splice(selectionStart, 0, val);
           selectionStart += val.length;
@@ -380,28 +432,39 @@ const calculator = {
 		}
     function clear() {
       area.val(``);
-      changeHistory2(``);
+      changeHistoryFunc(``);
       changeHistory = false;
     }
-    function changeHistory2(value) {
+    function changeHistoryFunc(value) {
       if (history.length > 200) history.shift();
       history.push(value);
+    }
+    function goToCompile() {
+      calculator.compile();
+      clear();
     }
     $(`.calculator__control`)
       .children()
       .each(function () {
         if (!$(this).attr(`value`)) $(this).attr(`value`, $(this).text());
       });
-    //$(`.calculator`).hide();
+    $(`.calculator`).hide();
     $(`.calculator__control div`).on(`click`, function () {
       const val = $(this).attr(`value`);
       var text = area.val().split(``);
       if (val == `clear`) clear();
       else if (val == "history") moveHistory();
+      else if (val==`go`) goToCompile();
       else insertKey(val,text);
     });
-    area.on(`keyup`, function () {
-      changeHistory2($(this).val());
+    area.on(`keyup`, function (key) {
+      if (key.which==13 && key.ctrlKey) {
+        goToCompile();
+        $(this).blur()
+        return;
+      }
+      changeHistoryFunc($(this).val());
+      changeHistory=false;
     });
     area.on(`focusout`, function () {
 			focusIn=false;
@@ -415,12 +478,228 @@ const calculator = {
 			focusIn=true;
 		})
     $(window).on(`keyup`, (event) => {
-			//	if ($(`.calculator`).attr(`active`)==`false`) return;
-			if (focusIn) return;
+			if (focusIn || event.which==18 || event.which==16 || $(`.calculator`).attr(`active`)==`false`) return;
       keys(event,area.val());
     });
   },
   move: new Move($(`.calculator`)),
-  compile() {},
+  compile() {
+    const mass=$(`.calculator__input`).val().trim().split(``);
+    var count=[] , error=false;
+    function errorLog() {
+      $(`.calculator__result`).text(`error`)
+    }
+    const process={
+      separateBySign() {
+        var from=0;
+        function isTrigger(sign,searchForDugs=false) {
+          var value=false;
+          var triggers=[`+`,`-`,`*`,`/`,`%`,`^`,`)`,`(`];
+          if (searchForDugs) {
+            triggers.pop()
+            triggers.pop()
+          }
+          for (let i=0;i<triggers.length;i++) {
+            if (triggers[i]==sign) {
+              value=true;
+              break
+            }
+          }
+          return value;
+        }
+        function dugs() {
+          var value=false;
+          if (mass.indexOf(`(`)!=-1 && find(`(`)!=find(`)`)) {
+            value=true;
+          }
+          function find(char) {
+            var number=0;
+            mass.forEach(function (elem) {
+              if (elem==char) number++;
+            })
+            return number;
+          }
+          return value;
+        }
+        for (let i=0;i<mass.length;i++) {
+            if (isTrigger(mass[i])) {
+              var num=mass.slice(from,i);
+              const values=[
+                num.length==0,
+                i==mass.length-1,
+                isTrigger(mass[i+1],true),
+                dugs()
+              ].forEach(function (elem) {
+                if (elem) error=true;
+              })
+              if (error) break;
+              count.push(num.join(``),mass[i]);
+              from=i+1;
+            }
+          if (i==mass.length-1)
+            count.push(mass.slice(from,i+1).join(``))
+        }
+        if (count.length==0) error=true;
+        console.log(count);
+      },
+      doStuffWithDugs() {
+        if (error) {
+          errorLog();
+          return;
+        }
+
+      }
+    }
+    process.separateBySign();
+    process.doStuffWithDugs();
+  },
 };
 calculator.innit();
+const game={
+  innit() {
+    var massElem=[$(`.game__process`),$(`.game__final-result`),$(`.game__opponent`).find(`[alt="typical"]`),$(`.my-hand`)].forEach(function (elem) {
+      elem.hide()
+    })
+    $(`.game__main-select`).show();
+    var clickSelected=false , roundsNum, noOneWins=false , currentRound=0;
+    const me={
+      counts:0,
+      select:``,
+      prevSelect:``
+    }
+    const opponent={
+      counts:0,
+      prevWin:'static',
+      select:``,
+      prevSelect:``,
+      tactic:inst.random(0,1)
+    }
+    const mass=["rock","paper","scissors"];
+      const tactics=[
+        [["rock","rock","rock"],["paper","paper","paper"],["scissors","scissors","scissors"]],
+        ["paper","scissors","rock"],
+        ["rock","scissors","paper"],
+        [["rock","paper","paper"],["scissors","paper","paper"],["paper","scissors","paper"]]
+      ];
+      tactics.forEach(function (elem) {
+        if (typeof(elem[0])==`object`) elem.sort(function () {return 0.5-Math.random()})
+        else elem.push(...elem,...elem);
+      })
+      const howToPlay=tactics[inst.random(0,3)].flat()
+    function setRounds() {
+      $(`.game__round p`).text(currentRound+`/`+roundsNum);
+    }
+    function animation() {
+      function bothAnim(amount) {
+        $($(`.game__you[alt="typical"]`)[0]).css({left:amount});
+        $($(`.game__you[alt="typical"]`)[2]).css({right:amount});
+      }
+      bothAnim($(`.game__pick`).width()/2-$(`[alt="typical"]`).width()/2);
+      setTimeout(()=>{
+        $(`[alt="typical"]`).hide();
+        $(`.game__pick`).css({"justifyContent":"center"});
+        $(`.my-hand`).show().addClass(`move-up`);
+        $(`.opponent-hand`).addClass(`move-down`);
+      },1000);
+      setTimeout(()=>{
+        if ($(`.game`).attr(`active`)==`false`) return;
+        $(`.my-hand`).hide().removeClass(`move-up`);
+        $(`.opponent-hand`).hide().removeClass(`move-down`);
+        $(`.game__you`).find(`[type="${me.select}"]`).show();
+        $(`.game__opponent`).find(`[type="${opponent.select}"]`).show();
+        $(`#wins`).text(me.counts);
+        $(`#defaults`).text(opponent.counts);
+        setRounds();
+        setTimeout(()=>{
+          $(`.game__pick`).removeAttr(`style`);
+          bothAnim(0);
+          $(`.game__you`).find(`[type]`).show();
+          $(`.game__opponent`).find(`[type]`).hide();
+          $(`.opponent-hand`).show();
+          setTimeout(()=>{
+            if (me.counts==roundsNum || opponent.counts==roundsNum) {
+              var final_=$(`.game__final-result`);
+              final_.removeClass([`victoryFon`,`defeat`])
+              final_.addClass(`appear`).css({"display":"flex"})
+              if (me.counts>opponent.counts) {
+                final_.find(`p`).text(`you won`);
+                final_.addClass(`victoryFon`)
+              } else {
+                final_.find(`p`).text(`you lost`);
+                final_.addClass(`defeat`)
+              }
+            }
+          },500);
+        },500);
+      },4000);
+    }
+    function result() {
+      //!!select opponent
+      if (opponent.tactic==0) {
+        if (!noOneWins) opponent.select=howToPlay.shift();
+      }
+       else {
+        if (opponent.prevWin!=`static` && opponent.prevWin) opponent.select=opponent.prevSelect;
+        else if (opponent.prevWin==`static`) opponent.select=mass[inst.random(0,2)];
+        else {
+          mass.forEach(function (elem) {
+            if (me.prevSelect!=elem && opponent.prevSelect!=elem) opponent.select=elem;
+          })
+        }
+      }
+      currentRound++;
+      //!!who won
+      me.prevSelect=me.select;
+      opponent.prevSelect=opponent.select;
+      if (me.select==opponent.select) {
+        opponent.prevWin=`static`;
+        noOneWins=true;
+      }
+      else {
+        if ((me.select=="scissors" && opponent.select=="paper") || (me.select=="paper" && opponent.select=="rock") || (me.select=="rock" && opponent.select=="scissors")) {
+          me.counts++;
+          opponent.prevWin=false;
+        }
+        else {
+          opponent.counts++;
+          opponent.prevWin=true;
+        }
+        noOneWins=false;
+      }
+    }
+    const eventFunc=[
+    [$(`.click`),function () {
+      if (clickSelected) return;
+      clickSelected=true;
+      setTimeout(()=>{
+        clickSelected=false;
+        $(this).removeAttr(`style`);
+        $(`.game__process`).fadeIn(500).css({display:"flex"});
+        $(`.game__sounds`).attr(`src`,`./sounds/gameStarts.mp3`);
+        setRounds()
+      },1500);
+      setTimeout(()=>{
+        $(`.game__main-select`).fadeOut(500);
+      },1000);
+      $(this).css({background:`#F43F52`});
+      roundsNum=+$(this).find(`p`).attr(`value`);
+    }],
+    [$(`.game__you`).find(`[alt]`),function () {
+      if (clickSelected) return;
+      clickSelected=true;
+      setTimeout(()=>{clickSelected=false},5000);
+      me.select=$(this).attr(`type`);
+      result();
+      animation();
+    }],
+    [$(`.game__repeat`),function () {
+      game.innit();
+    }]
+  ]
+    $(`.click`).on(`click`,eventFunc[0]);
+    $(`.game__you`).find(`[alt]`).on(`click`,eventFunc[1]);
+    $(`.game__repeat`).on(`click`,eventFunc[2])
+  },
+  move: new Move($(`.game`))
+}
+game.innit()

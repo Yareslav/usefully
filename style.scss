@@ -113,6 +113,7 @@ body {
     width: 100%;
     height: 100%;
     position: absolute;
+    object-fit: contain;
   }
   // .system__vid-attr
 
@@ -134,19 +135,33 @@ body {
     height: 5px;
     background: #322f2f;
     border-radius: 5px;
-    justify-content: stretch;
+    appearance: none;
+    &::-webkit-slider-thumb {
+      appearance: none;
+      background: #0da6e4;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      cursor: pointer;
+      &:hover {
+        transition: all 0.3s ease;
+        opacity: 0.8;
+      }
+    }
   }
-
+  &__progress-bar {
+    height: 5px;
+    border-radius: 5px;
+    background: #092b6c;
+    &:hover {
+      transition: all 0.3s ease;
+      opacity: 0.8;
+    }
+  }
   // .system__control
-  &__ball {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: rgb(39, 39, 100);
-  }
   &__control {
     width: 100%;
-    color: white;
+    color: #a1c7d6;
   }
   // .system__buttons
   &__buttons {
@@ -154,6 +169,7 @@ body {
     img {
       width: 21px;
       object-fit: contain;
+      cursor: url(./images/hand.png), default;
     }
   }
   @media (max-width: 450px) {
@@ -176,6 +192,10 @@ body {
     right: 0;
     display: none;
   }
+}
+.black {
+  background: black;
+  display: none;
 }
 .hover-inst {
   animation: hover-inst 0.5s linear;
@@ -265,8 +285,8 @@ body {
   }
 }
 .calculator {
-	display: none;
-	background: #092b6c;
+  display: none;
+  background: #092b6c;
   width: 35%;
   min-width: 300px;
   position: absolute;
@@ -274,9 +294,9 @@ body {
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 20px;
-	border-radius: 5px;
-	color: #322f2f;
-	font-weight: 800;
+  border-radius: 5px;
+  color: #322f2f;
+  font-weight: 800;
   justify-items: center;
   max-width: 450px;
   & > div,
@@ -286,25 +306,25 @@ body {
   // .calculator__title
 
   &__title {
-		margin-top: 5px;
+    margin-top: 5px;
     height: 30px;
     p {
-			padding-left: 10px;
-		}
+      padding-left: 10px;
+    }
   }
 
   // .calculator__move
 
   &__move {
-		width: 30px;
-		border-radius: 10px;
-		height: 100%;
-		background: #075B7D;
-		cursor: url(./images/hand.png), default;
-		&:hover{
-			background: #CAE8F4;
-			transition: all 0.3s ease;
-		}
+    width: 30px;
+    border-radius: 10px;
+    height: 100%;
+    background: #075b7d;
+    cursor: url(./images/hand.png), default;
+    &:hover {
+      background: #cae8f4;
+      transition: all 0.3s ease;
+    }
   }
 
   // .calculator__input
@@ -312,32 +332,32 @@ body {
   &__input {
     max-height: 250px;
     resize: vertical;
-		min-height: 100px;
-		background: #0da6e4;
-		border: 3px solid white;
-		border-radius: 5px;
-		&:focus{
-			transition: all 0.3s ease;
-			background: #075B7D;
-			border: 3px solid#0da6e4;
-			outline: none;
-		}
-		&::placeholder{
-			color: #322f2f;
-			font-weight: 800;
-			font-size: 20px;
-		}
+    min-height: 100px;
+    background: #0da6e4;
+    border: 3px solid white;
+    border-radius: 5px;
+    &:focus {
+      transition: all 0.3s ease;
+      background: #075b7d;
+      border: 3px solid#0da6e4;
+      outline: none;
+    }
+    &::placeholder {
+      color: #322f2f;
+      font-weight: 800;
+      font-size: 20px;
+    }
   }
 
   // .calculator__result
 
   &__result {
-		height: 30px;
-		background: white;
-		border-radius: 10px;
-		& p{
-			padding-right: 10px;
-		}
+    height: 30px;
+    background: white;
+    border-radius: 10px;
+    & p {
+      padding-right: 10px;
+    }
   }
 
   // .calculator__control
@@ -355,18 +375,300 @@ body {
       display: flex;
       justify-content: center;
       align-items: center;
-			position: relative;
-			font-size: 20px;
-			cursor: url(./images/hand.png), default;
-			background: #CAE8F4;
-			&:hover{
-				border-radius: 20px;
-				transition: all 0.3s ease;
-				background: #0da6e4;
-			}
-			img{
-				height: 30px;
-			}
+      position: relative;
+      font-size: 20px;
+      cursor: url(./images/hand.png), default;
+      background: #cae8f4;
+      &:hover {
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        background: #0da6e4;
+      }
+      img {
+        height: 30px;
+      }
     }
   }
+}
+.game {
+  $green: #0e6655;
+  $gray: #909497;
+  $blue: #5dade2;
+  $yellow: #f4d03f;
+  height: 400px;
+  min-width: 300px;
+  width: 40%;
+  max-width: 550px;
+  z-index: 20;
+  display: none;
+  position: absolute;
+  border-radius: 5px;
+  background: $green;
+  & > div {
+    width: calc(100% - 20px);
+  }
+  &__title {
+    @extend .calculator__title;
+    color: #322f2f;
+    p{
+      max-height: 20px;
+      overflow: auto;
+      width: 80%;
+    }
+  }
+  &__move {
+    @extend .calculator__move;
+    background: $gray;
+  }
+  &__field {
+    height: 340px;
+    position: relative;
+    bottom: 20px;
+  }
+  // .game__main-select
+
+  &__main-select {
+    & p:first-child{
+      font-weight: 700;
+      font-size: 20px;
+      color: $blue;
+      text-align: center;
+    }
+    z-index: 2;
+  }
+
+  // .game__select
+
+  &__select {
+    margin-top: 10px;
+    width:100%;
+    height: 310px;
+    color: $yellow;
+    font-size: 30px;
+    & > div{
+      background: $gray;
+      height: 65px;
+      width: 60%;
+      min-width: 230px;
+      border-radius: 20px;
+      cursor: url(./images/hand.png), default;
+      &:hover{
+        transition: all 0.3s ease;
+        background: $yellow;
+        color: $gray;
+      }
+      transition: all 0.3s ease;
+    }
+  }
+
+  // .game__block
+
+  &__block {
+    width: 90px;
+    img{
+      display: block;
+      width: 30px;
+    }
+  }
+
+  &__process {
+    width:100%;
+    height:100%;
+  }
+
+  // .game__first
+
+  &__first {
+    height: 60px;
+    width:98%;
+  }
+
+  // .game__round
+
+  &__round {
+    align-self: flex-start;
+    height:40px;
+    width: 40px;
+    background: $gray;
+    color: $yellow;
+    border-radius: 10px;
+    font-size: 13px;
+  }
+
+  // .game__grid
+
+  &__grid {
+    height:100%;
+    width: 210px;
+    display: grid;
+    grid-template-columns: 90px 120px;
+    grid-auto-rows: 1fr;
+    grid-gap: 5px;
+    & > div{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      position:relative;
+      border:1px solid $gray;
+    }
+    img{
+      width: 30px;
+    }
+    color: $blue;
+    & div:first-child , & div:nth-child(2){
+      font-size: 12px;
+      justify-content: space-around;
+    }
+  }
+
+  // .game__opponent
+
+  &__opponent {
+    width:100%;
+    height: 100px;
+    top: -10px;
+    img{
+      width: 17%;
+    }
+  }
+
+  // .game__result
+
+
+  &__you {
+    top: -20px;
+    width:100%;
+    height: 100px;
+  }
+
+  // .game__pick
+
+  &__pick {
+    width: 80%;
+    height:100%;
+    img{
+      width: 23%;
+    }
+  }
+  [alt="typical"]{
+    transition: all 1s ease-in-out;
+    position: relative;
+    cursor: url(./images/hand.png), default;
+    &:hover{
+      transform: scale(1.2,1.2);
+      transition: all 0.3s ease;
+    }
+  }
+  // .game__final-result
+  &__repeat{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: $gray;
+    cursor: url(./images/hand.png), default;
+    &:hover{
+      transition: all 0.3s ease;
+      background: $green;
+    }
+    img{
+      width: 30px;
+    }
+  }
+  &__final-result {
+    background-size: cover;
+    background-position: center;
+    z-index: 2;
+    font-size: calc(30px + (50 - 30) * (100vw / 1920));
+    color: $blue;
+  }
+}
+.my-hand{
+  position: relative;
+}
+.opponent-hand{
+  position: relative;
+      transform: rotate(180deg);
+}
+.move-up{
+  animation: move-up 3s linear;
+}
+.move-down{
+  animation: move-down 3s linear;
+}
+[move]{
+  img{
+    width: 90%;
+  }
+}
+@keyframes move-up{
+  0%{
+    top: 0;
+  }
+  14.3%{
+    top: 15px;
+  }
+  28.6%{
+    top: 0;
+  }
+  42.9%{
+    top: 15px;
+  }
+  57.2%{
+    top: 0;
+  }
+  71.5%{
+    top: 15px;
+  }
+  85.8%{
+    top: 0;
+  }
+  100%{
+    top: 15px;
+  }
+}
+@keyframes move-down{
+  0%{
+    top: 0;
+  }
+  14.3%{
+    top: -15px;
+  }
+  28.6%{
+    top: 0;
+  }
+  42.9%{
+    top: -15px;
+  }
+  57.2%{
+    top: 0;
+  }
+  71.5%{
+    top: -15px;
+  }
+  85.8%{
+    top: 0;
+  }
+  100%{
+    top: -15px;
+  }
+}
+.appear{
+  animation: appear 0.5s linear;
+}
+@keyframes appear{
+  0%{
+    transform: scale(0.1,0.1) rotate(210deg);
+  }
+  100%{
+    transform: scale(1,1) rotate(0deg);
+  }
+}
+.victoryFon{
+  background-image: url(./images/victoryFon.jpg);
+}
+.defeat{
+  background-image: url(./images/defeat.jpg);
 }

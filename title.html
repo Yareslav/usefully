@@ -39,19 +39,20 @@
 			<div class="command" type="watch">
 				<img src="./images/watch.png" alt="">
 			</div>
-			<div class="command" type="rock&paper&scisors">
+			<div class="command" type="game">
 				<img src="./images/rock&paper&scisors.png" alt="">
 			</div>
 		</div>
-		<div class="system__sounds beet2" >
+		<div class="system__sounds beet2">
 			<div class="command" type="audio">
 				<img src="./images/audio.png" alt="">
 				<audio src="#" class="play" autoplay loop attr="audio"></audio>
 			</div>
 			<div class="system__sounds-container beet2 container">
 			</div>
-			<div class="system__cont-audio beet2" >
+			<div class="system__cont-audio beet2">
 				<input class="system__progress" type="range" input="true">
+				<div class="system__progress-bar abs"></div>
 				<div class="system__control beet">
 					<p class="current-time"></p>
 					<div class="system__buttons beet">
@@ -64,7 +65,7 @@
 				<div class="system__cont-audio">
 					<input type="range" value="50" id="audio-regulation">
 				</div>
-		</div>
+			</div>
 		</div>
 		<div class="system__videous">
 			<div class="command" type="video">
@@ -77,10 +78,11 @@
 				<img src="./images/notes.png" alt="">
 			</div>
 		</div>
-		<div class="system__video-big abs center" >
+		<div class="system__video-big abs center">
 			<video src="#" autoplay muted loop attr="video"></video>
 			<div class="system__vid-attr beet2">
 				<input class="system__progress" id="black" type="range" input="true">
+				<div class="system__progress-bar abs"></div>
 				<div class="system__control beet">
 					<p class="current-time"></p>
 					<div class="system__buttons beet">
@@ -93,11 +95,13 @@
 			</div>
 		</div>
 		<div class="calculator" active="false">
-			<div class="calculator__title beet" >
-				<p >Calculator</p>
-				<div class="calculator__move" active="false" move></div>
+			<div class="calculator__title beet">
+				<p>Calculator</p>
+				<div class="calculator__move center" active="false" move>
+					<img src="./images/move.png" alt="">
+				</div>
 			</div>
-			<textarea class="calculator__input" ></textarea>
+			<textarea class="calculator__input"></textarea>
 			<div class="calculator__result center">
 				<p>=</p>
 			</div>
@@ -131,7 +135,81 @@
 				<div>%</div>
 				<div value="go">=</div>
 			</div>
-	</div>
+		</div>
+		<div class="game beet2" active="false">
+			<audio src="#" class="game__sounds" autoplay></audio>
+			<div class="game__title beet">
+				<p>Rock  paper scissors game</p>
+				<div class="game__move center" active="false" move>
+					<img src="./images/move.png" alt="">
+				</div>
+			</div>
+			<div class="game__field">
+				<div class="game__main-select abs">
+					<p>Select rounds</p>
+					<div class="game__select  beet2">
+						<div class="center click">
+							<div class="game__block beet">
+								<img src="./images/fist.png" alt="">
+								<p class="game__rounds" value="3">3</p>
+							</div>
+						</div>
+						<div class="center click">
+							<div class="game__block beet">
+								<img src="./images/fist.png" alt="">
+								<p class="game__rounds" value="5">5</p>
+							</div>
+						</div>
+						<div class="center click">
+							<div class="game__block beet">
+								<img src="./images/fist.png" alt="">
+								<p class="game__rounds" value="9">9</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="game__process beet2">
+					<div class="game__first beet">
+						<div class="game__round center">
+							<p>0/4</p>
+						</div>
+						<div class="game__grid">
+							<div class="beet">
+								<img src="./images/victory.png" alt="">
+								<p>Wins</p>
+							</div>
+							<div class="beet">
+								<img src="./images/fingerDown.png" alt="">
+								<p>Defaults</p>
+							</div>
+							<div id="wins">0</div>
+							<div id="defaults">0</div>
+						</div>
+					</div>
+					<div class="game__opponent center">
+						<img src="./images/rock.png" alt="typical" type="rock">
+							<img src="./images/paper.png" alt="typical" type="paper">
+							<img src="./images/scissors.png" alt="typical" type="scissors">
+						<img src="./images/handInFist.png" class="opponent-hand">
+					</div>
+					<div class="game__you center">
+						<div class="game__pick beet">
+							<img src="./images/rock.png" alt="typical" type="rock">
+							<img src="./images/paper.png" alt="typical" type="paper">
+							<img src="./images/scissors.png" alt="typical" type="scissors">
+							<img src="./images/handInFist.png" class="my-hand">
+						</div>
+					</div>
+				</div>
+				<div class="game__final-result abs center">
+					<p></p>
+					<div class="game__repeat center">
+						<img src="./images/repeat.png" alt="">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="black abs"></div>
 	</div>
 </body>
 <script src='https://code.jquery.com/jquery-3.5.1.min.js'
