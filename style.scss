@@ -5,6 +5,7 @@ body {
   font-family: "Goblin One", cursive;
   max-height: 1080px;
 }
+$gray2: #322f2f;
 .system {
   width: 100%;
   height: 100vh;
@@ -285,7 +286,6 @@ body {
   }
 }
 .calculator {
-  display: none;
   background: #092b6c;
   width: 35%;
   min-width: 300px;
@@ -410,7 +410,7 @@ body {
   &__title {
     @extend .calculator__title;
     color: #322f2f;
-    p{
+    p {
       max-height: 20px;
       overflow: auto;
       width: 80%;
@@ -428,7 +428,7 @@ body {
   // .game__main-select
 
   &__main-select {
-    & p:first-child{
+    & p:first-child {
       font-weight: 700;
       font-size: 20px;
       color: $blue;
@@ -441,18 +441,18 @@ body {
 
   &__select {
     margin-top: 10px;
-    width:100%;
+    width: 100%;
     height: 310px;
     color: $yellow;
     font-size: 30px;
-    & > div{
+    & > div {
       background: $gray;
       height: 65px;
       width: 60%;
       min-width: 230px;
       border-radius: 20px;
       cursor: url(./images/hand.png), default;
-      &:hover{
+      &:hover {
         transition: all 0.3s ease;
         background: $yellow;
         color: $gray;
@@ -465,29 +465,29 @@ body {
 
   &__block {
     width: 90px;
-    img{
+    img {
       display: block;
       width: 30px;
     }
   }
 
   &__process {
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 100%;
   }
 
   // .game__first
 
   &__first {
     height: 60px;
-    width:98%;
+    width: 98%;
   }
 
   // .game__round
 
   &__round {
     align-self: flex-start;
-    height:40px;
+    height: 40px;
     width: 40px;
     background: $gray;
     color: $yellow;
@@ -498,24 +498,25 @@ body {
   // .game__grid
 
   &__grid {
-    height:100%;
+    height: 100%;
     width: 210px;
     display: grid;
     grid-template-columns: 90px 120px;
     grid-auto-rows: 1fr;
     grid-gap: 5px;
-    & > div{
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      position:relative;
-      border:1px solid $gray;
+    & > div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      border: 1px solid $gray;
     }
-    img{
+    img {
       width: 30px;
     }
     color: $blue;
-    & div:first-child , & div:nth-child(2){
+    & div:first-child,
+    & div:nth-child(2) {
       font-size: 12px;
       justify-content: space-around;
     }
@@ -524,20 +525,19 @@ body {
   // .game__opponent
 
   &__opponent {
-    width:100%;
+    width: 100%;
     height: 100px;
     top: -10px;
-    img{
+    img {
       width: 17%;
     }
   }
 
   // .game__result
 
-
   &__you {
     top: -20px;
-    width:100%;
+    width: 100%;
     height: 100px;
   }
 
@@ -545,22 +545,21 @@ body {
 
   &__pick {
     width: 80%;
-    height:100%;
-    img{
+    height: 100%;
+    img {
       width: 23%;
     }
   }
-  [alt="typical"]{
-    transition: all 1s ease-in-out;
+  [alt="typical"] {
     position: relative;
     cursor: url(./images/hand.png), default;
-    &:hover{
-      transform: scale(1.2,1.2);
+    &:hover {
+      transform: scale(1.2, 1.2);
       transition: all 0.3s ease;
     }
   }
   // .game__final-result
-  &__repeat{
+  &__repeat {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -569,11 +568,11 @@ body {
     border-radius: 50%;
     background: $gray;
     cursor: url(./images/hand.png), default;
-    &:hover{
+    &:hover {
       transition: all 0.3s ease;
       background: $green;
     }
-    img{
+    img {
       width: 30px;
     }
   }
@@ -585,90 +584,519 @@ body {
     color: $blue;
   }
 }
-.my-hand{
-  position: relative;
+.my-hand {
+  position: absolute;
 }
-.opponent-hand{
+.opponent-hand {
   position: relative;
-      transform: rotate(180deg);
+  transform: rotate(180deg);
 }
-.move-up{
+.move-up {
   animation: move-up 3s linear;
 }
-.move-down{
+.move-down {
   animation: move-down 3s linear;
 }
-[move]{
-  img{
+[move] {
+  img {
     width: 90%;
   }
 }
-@keyframes move-up{
-  0%{
+@keyframes move-up {
+  0% {
     top: 0;
   }
-  14.3%{
+  14.3% {
     top: 15px;
   }
-  28.6%{
+  28.6% {
     top: 0;
   }
-  42.9%{
+  42.9% {
     top: 15px;
   }
-  57.2%{
+  57.2% {
     top: 0;
   }
-  71.5%{
+  71.5% {
     top: 15px;
   }
-  85.8%{
+  85.8% {
     top: 0;
   }
-  100%{
+  100% {
     top: 15px;
   }
 }
-@keyframes move-down{
-  0%{
+@keyframes move-down {
+  0% {
     top: 0;
   }
-  14.3%{
+  14.3% {
     top: -15px;
   }
-  28.6%{
+  28.6% {
     top: 0;
   }
-  42.9%{
+  42.9% {
     top: -15px;
   }
-  57.2%{
+  57.2% {
     top: 0;
   }
-  71.5%{
+  71.5% {
     top: -15px;
   }
-  85.8%{
+  85.8% {
     top: 0;
   }
-  100%{
+  100% {
     top: -15px;
   }
 }
-.appear{
+.appear {
   animation: appear 0.5s linear;
 }
-@keyframes appear{
-  0%{
-    transform: scale(0.1,0.1) rotate(210deg);
+@keyframes appear {
+  0% {
+    transform: scale(0.1, 0.1) rotate(210deg);
   }
-  100%{
-    transform: scale(1,1) rotate(0deg);
+  100% {
+    transform: scale(1, 1) rotate(0deg);
   }
 }
-.victoryFon{
+.victoryFon {
   background-image: url(./images/victoryFon.jpg);
 }
-.defeat{
+.defeat {
   background-image: url(./images/defeat.jpg);
+}
+.time {
+  $purple: #a569bd;
+  $blue: #2e86c1;
+  $red: #e74c3c;
+  $black: #273746;
+  background: $black;
+  min-width: 300px;
+  max-width: 550px;
+  width: 45%;
+  justify-content: stretch;
+  position: absolute;
+  z-index: 20;
+  height: 500px;
+  border-radius: 20px;
+  display: none;
+  &__title {
+    @extend .game__title;
+    width: calc(100% - 20px);
+    color: $red;
+  }
+
+  // .time__move
+
+  &__move {
+    @extend .game__move;
+    background: $purple;
+  }
+
+  // .time__list
+
+  &__list {
+    width: 90%;
+    max-width: 456px;
+    margin-top: 20px;
+  }
+
+  // .time__part
+
+  &__part {
+    font-size: 10px;
+    color: $blue;
+    justify-content: stretch;
+    p {
+      margin-top: 5px;
+    }
+  }
+  &__process {
+    width: calc(100% - 20px);
+    height: 350px;
+    margin-top: 10px;
+    & > div {
+      width: 100%;
+      height: 100%;
+      justify-content: stretch;
+    }
+  }
+  // .time__circle
+
+  &__circle {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #a569bd;
+    cursor: url(./images/hand.png), default;
+    &:hover {
+      transition: all 0.3s ease;
+      background: $red;
+    }
+    img {
+      width: 70%;
+    }
+  }
+
+  &__show-time {
+    margin-top: 20px;
+    font-size: calc(25px + (40 - 25) * (100vw / 1920));
+    color: $blue;
+  }
+
+  // .time__hours
+
+  &__manage {
+    margin-top: 5px;
+    & > div {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: $blue;
+      cursor: url(./images/hand.png), default;
+      p {
+        font-size: 14px;
+        color: $black;
+      }
+      &:hover {
+        transition: all 0.3s ease;
+        background: $purple;
+        & * {
+          transition: all 0.3s ease;
+          transform: rotate(30deg);
+        }
+      }
+    }
+    img {
+      width: 50%;
+    }
+  }
+
+  // .time__box
+
+  &__box {
+    margin-top: 20px;
+    height: 210px;
+    justify-content: stretch;
+    border: 3px solid $red;
+    border-radius: 10px;
+    overflow: auto;
+    & > div {
+      width: 100%;
+      min-height: 30px;
+    }
+    &::-webkit-scrollbar {
+      width: 10px;
+      background-color: $purple;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: $blue;
+    }
+  }
+  &__fool {
+    border-radius: 5px;
+    width: 100%;
+    height: 20px;
+    background: $blue;
+  }
+  &__loop-status {
+    width: 90%;
+    height: 100%;
+    color: $black;
+    & p {
+      font-size: calc(8px + (20 - 8) * (100vw / 1920));
+      @include min(20, 1920);
+      @media (max-width: 840px) {
+        font-size: 10px;
+      }
+    }
+  }
+  .bigSize {
+    font-size: 18px;
+  }
+  .box {
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+    background: $black;
+  }
+
+  // .time__alarmClock
+
+  // .time__closeTimer
+
+  &__closeTimer {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: $blue;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: url(./images/hand.png), default;
+    img {
+      width: 70%;
+    }
+    &:hover {
+      transition: all 0.3s ease;
+      background: $red;
+    }
+  }
+  &__timer {
+    display: none;
+  }
+  &__main {
+    width: 50%;
+    border-radius: 50%;
+    border: 5px solid white;
+    max-width: 220px;
+    margin-top: 20px;
+  }
+  canvas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+  }
+  // .time__info
+
+  &__info {
+    border-radius: 50%;
+    width: 90%;
+    height: 90%;
+    position: relative;
+    background: $black;
+    .beet {
+      font-size: calc(13px + (25 - 13) * (100vw / 1920));
+      @include min(25, 1920);
+      width: 80%;
+      min-width: 130px;
+      color: $red;
+    }
+  }
+  &__put-image {
+    display: none;
+    position: absolute;
+    bottom: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: $purple;
+    img {
+      height: 30px;
+    }
+  }
+  // .time__select
+
+  &__select {
+    position: absolute;
+    bottom: 30px;
+    width: calc(100% - 10px);
+  }
+  &__container {
+    font-size: 10px;
+    color: $blue;
+  }
+  &__front {
+    width: calc(100% - 60px);
+    height: 32px;
+    align-self: flex-end;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 30px repeat(3, 1fr);
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+  }
+  // .time__timer-start
+  &__input {
+    max-height: 24px;
+    width: 50px;
+    background: $purple;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    @media (max-width: 1120px) {
+      width: 40px;
+    }
+    color: $red;
+    font-weight: 800;
+    &:focus {
+      transition: all 0.3s ease;
+      border: 4px solid $red;
+    }
+  }
+  &__timer-start {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: $blue;
+    img {
+      width: 15px;
+    }
+  }
+
+  // .time__select-img
+
+  &__select-img {
+    width: 150px;
+    height: 200px;
+    position: absolute;
+    right: -50px;
+    bottom: 0;
+  }
+
+  // .time__grid
+
+  &__grid {
+    display: none;
+    margin-bottom: 10px;
+    width: 100%;
+    height: 150px;
+    background: $blue;
+    border-radius: 10px;
+    @media (max-width: 425px) {
+      right: 50px;
+    }
+  }
+  &__grid-cont {
+    width: 140px;
+    height: 140px;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    div {
+      height: 40px;
+      width: 40px;
+      border-radius: 5px;
+      background: $purple;
+    }
+    img {
+      width: 30px;
+    }
+  }
+  @media (max-width: 950px) {
+    &__container {
+      flex-direction: column;
+      p {
+        order: 2;
+        margin-top: 5px;
+      }
+    }
+    &__input {
+      order: 1;
+      width: 90%;
+    }
+  }
+}
+.alert {
+  z-index: 21;
+  display: none;
+  &__main {
+    justify-content: space-around;
+    min-width: 260px;
+    width: 30%;
+    height: 170px;
+    top: 0;
+    background: #092b6c;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    position: absolute;
+    font-size: calc(10px + (20 - 10) * (100vw / 1920));
+    @include min(20, 1920);
+
+  }
+  // .alert__img
+
+  &__img {
+    width: 60px;
+    height: 60px;
+    background: white;
+    img {
+      width: 40px;
+    }
+  }
+
+  // .alert__close
+
+  &__close {
+    background: #0da6e4;
+    width: 40px;
+    height: 40px;
+    position: absolute !important;
+    z-index: 22;
+    top: 10px;
+    right: 10px;
+    cursor: url(./images/hand.png), default;
+    img {
+      width: 30px;
+    }
+    &:hover {
+      transition: all 0.3s ease;
+      opacity: 0.6;
+    }
+  }
+  // .alert__message
+  &__message {
+    text-align: center;
+    width: 80%;
+    color: white;
+    font-style: italic;
+  }
+}
+.fixed {
+  width: calc(100% - 20px);
+  max-width: 450px;
+}
+.seePicture {
+  position: absolute;
+  bottom: 0;
+  img {
+    width: 20px;
+  }
+}
+::-webkit-scrollbar {
+  border-radius: 10px;
+}
+.selected-ball {
+  background: #e74c3c;
+  transition: all 0.3s ease;
+  border: 3px solid #2e86c1;
+}
+.hover-circle {
+  cursor: url(./images/hand.png), default;
+  &:hover {
+    transition: all 0.3s ease;
+    background: #e74c3c;
+  }
+}
+#margin {
+  @media (min-width: 1120px) {
+    margin-left: 20px;
+  }
+}
+.circle {
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.animate-alert {
+  animation: animate-alert 0.5s linear;
+}
+@keyframes animate-alert {
+  0% {
+    top: -170px;
+    transform: perspective(400px) rotateX(60deg);
+  }
+  100% {
+    top: 0px;
+    transform: perspective(400px) rotateX(0deg);
+  }
 }

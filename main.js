@@ -1,203 +1,3 @@
-const inst = {
-  random(a, b) {
-    return Math.floor(a + Math.random() * (b + 1 - a));
-  },
-  getDirection(file) {
-    return `./images/` + file + `.png`;
-  },
-  containerSort(mass, element) {
-    mass.forEach(function (elem, ind) {
-      $(`.` + element).append(
-        $(`<div class="beet">
-			<p>${ind + 1}</p>
-				<p class="over">${elem}</p>
-			</div>`)
-      );
-    });
-    $(`.` + element)
-      .children()
-      .on(`click`, function () {
-        const text_ = $(this).find(`.over`).text();
-        var fast_ = fast_.bind(system);
-        function fast_(ind) {
-          this.commandMass[ind][2]();
-        }
-        if (element == `system__sounds-container`) {
-          $(this)
-            .parent()
-            .parent()
-            .find(`.play`)
-            .attr(`src`, `./sounds/${text_}.wav`);
-          fast_(0);
-          $(`.system__cont-audio`).css({ display: "flex" });
-          system.audio.render();
-        } else {
-          $(`.black`).show();
-          $(`video`).attr(`src`, `./videous/${text_}.mp4`);
-          fast_(1);
-          $(`.system__vid-attr`).css({ display: "flex" });
-          system.video.render();
-        }
-      });
-  },
-  convertTime(time) {
-    time = Math.floor(time);
-    if (time < 10) return `00:0` + time;
-    else if (time >= 10 && time < 60) return `00:` + time;
-    else {
-      var taker = 0;
-      const full = Math.round(time % 60);
-      while (time >= 60) {
-        time = time / 60;
-        taker++;
-      }
-      return `0${taker}:${full < 10 ? `0` + full : full}`;
-    }
-  },
-  functionsFromObject(obj) {
-    Object.entries(obj).forEach(function (elem) {
-      if (typeof elem[1] == `function`) obj[elem[0]]();
-    });
-  },
-  resetBigElem(obj,elem){
-    elem.removeAttr(`style`).hide();
-        obj.move.activeMove = false;
-        elem.find(`[move]`).attr(`active`, false).removeAttr(`style`);
-  }
-};
-class Media {
-  constructor(elem) {
-    this.elem = $(elem);
-    this.type = this.elem.find(`video`).length != 0 ? `video` : `audio`;
-    this.type=document.querySelector(elem+` `+this.type);
-    this.elem.currentTime=0;
-    this.focus = false;
-    this.input_ = this.elem.find(`[input]`);
-    this.play = this.elem.find(`[type="pause"]`);
-    this.clickPlay = () => {
-      const act_ = JSON.parse(this.play.attr(`active`));
-      if (act_) {
-        this.play.attr(`src`, inst.getDirection(`pause`));
-        this.type.play();
-      } else {
-        this.play.attr(`src`, inst.getDirection(`play`));
-        this.type.pause();
-      }
-      this.play.attr(`active`, !act_);
-    };
-    this.play.on(`click`, this.clickPlay);
-    this.input_.on(`change`, () => {
-      this.type.currentTime = (this.input_.val() / 100) * this.type.duration;
-      this.elem
-        .find(`.current-time`)
-        .text(inst.convertTime(this.type.currentTime));
-    });
-    this.input_.on(`focusin`, () => {
-      this.focus = true;
-    });
-    $(window).on(`mouseup`, (event) => {
-      if (event.which == 1 && this.focus && $(event.target).attr(`input`)) {
-        this.focus = false;
-        this.input_.blur();
-      }
-    });
-    this.changeTime = (event) => {
-      var time;
-      if (event.attr(`type`) == `rotate-left`) time = this.type.currentTime - 5;
-      else time = this.type.currentTime + 5;
-      if (time < 0) time = 0;
-      else if (time > this.type.duration) time = this.type.duration;
-      this.type.currentTime = time;
-    };
-    this.elem.find(`.rotate`).on(`click`, (event) => {
-      this.changeTime($(event.target));
-    });
-    //unique
-    if (this.elem.find(`[autoplay]`).attr(`attr`)== `audio`) {
-      this.type.volume = 0.5;
-      $(`#audio-regulation`).on(`change`, () => {
-        this.type.volume = +$(`#audio-regulation`).val() / 100;
-      });
-    } else {
-      $(window).on(`keyup`, (key) => {
-        if (key.which == 37)
-          this.changeTime(this.elem.find(`[type="rotate-left"]`));
-        else if (key.which == 39)
-          this.changeTime(this.elem.find(`[type="rotate-right"]`));
-        else if (key.which == 32) this.clickPlay();
-      });
-    }
-    this.elem.find(`.system__progress-bar`).on(`mouseenter`,function () {
-      $(this).hide()
-    })
-    this.elem.find(`.system__progress`).on(`mouseleave`,()=>{
-      this.elem.find(`.system__progress-bar`).show()
-    });
-    $(window).on(`resize`,()=>{
-      this.setBarLength()
-    })
-  }
-  render() {
-    this.elem
-      .find(`[type="pause"]`)
-      .attr(`src`, inst.getDirection(`pause`))
-      .attr(`active`, false);
-    this.type.addEventListener(`timeupdate`,()=>{
-      this.elem
-      .find(`.current-time`)
-      .text(inst.convertTime(this.type.currentTime));
-    if (!this.focus)
-      this.input_.val((this.type.currentTime / this.type.duration) * 100);
-      this.setBarLength()
-    });
-    this.type.addEventListener(`loadedmetadata`, () => {
-      this.elem.find(`.all-time`).text(inst.convertTime(this.type.duration));
-    });
-    this.elem.find(`.current-time`).text(`00:00`);
-  }
-  setBarLength(){
-    this.value=this.elem.find(`.system__progress`).width()*(this.type.currentTime / this.type.duration);
-      this.elem.find(`.system__progress-bar`).css({width:
-        this.value-this.value*0.048
-      })
-  }
-}
-class Move {
-  constructor(elem) {
-    this.elem = elem;
-    this.focus = false;
-    this.activeMove = false;
-    $(window).on(`mousemove`, (event) => {
-      if (event.which == 1 && this.activeMove) this.focus = true;
-      else this.focus = false;
-      if (this.focus) {
-        var top=event.clientY , left=event.clientX;
-        const hei_=this.elem.height() , wid_=this.elem.width();
-        if (top<0) top=0;
-        else if (top+hei_>$(window).height()) top=$(window).height() - hei_;
-        if (left+wid_>$(window).width()) left=$(window).width() - wid_;
-        this.elem.css({
-          top: top,
-          left: left,
-        });
-      }
-    });
-    this.move=this.elem.find(`[move]`);
-    this.move.on(`click`, () => {
-      const cur_ = JSON.parse(this.move.attr(`active`));
-      if (cur_) {
-        this.elem.css({ cursor: "default" })
-        this.move.removeAttr(`style`)
-      }
-      else {
-        this.elem.css({ cursor: "move" })
-        this.move.css({background:`#F43F52`})
-      }
-      this.activeMove = !cur_;
-      this.move.attr(`active`, !cur_);
-    });
-  }
-}
 const system = {
   time() {
     var quoteCount = 29;
@@ -273,9 +73,8 @@ const system = {
         $(type).attr(`src`, `#`);
         if (type == `video`) {
           $(`.system__vid-attr`).hide();
-          $(`.black`).hide()
-        }
-        else if (type == `audio`) $(`.system__cont-audio`).hide();
+          $(`.black`).hide();
+        } else if (type == `audio`) $(`.system__cont-audio`).hide();
       }
       function sort2_(num) {
         this.commandMass.forEach(function (elem) {
@@ -348,24 +147,55 @@ const system = {
         $(`.calculator`).show().attr(`active`, true);
       },
       () => {
-        inst.resetBigElem(calculator,$(`.calculator`))
+        inst.resetBigElem(calculator, $(`.calculator`));
       },
     ],
     [
       `game`,
-      ()=>{
-        $(`.game`).css({display:"flex"}).attr(`active`,true);
+      () => {
+        $(`.game`).css({ display: "flex" }).attr(`active`, true);
         game.innit();
       },
-      ()=>{
-        inst.resetBigElem(game,$(`.game`));
-      }
-    ]
+      () => {
+        inst.resetBigElem(game, $(`.game`));
+      },
+    ],
+    [
+      `time`,
+      () => {
+        $(`.time`).css({ display: "flex" }).attr(`active`, true);
+      },
+      () => {
+        inst.resetBigElem(timeManagement, $(`.time`));
+      },
+    ],
   ],
-  video: new Media(`.system__video-big`),
-  audio: new Media(`.system__sounds`)
+  video: new Video(`.system__video-big`),
+  audio: new Audio(`.system__sounds`),
+  alertWindow:{
+    start(message,signal) {
+      $(`.alert`).css({display:"flex"});
+      $(`.alert__message`).text(message);
+      $(`.alert__main`).addClass(`animate-alert`);
+      setTimeout(()=>{
+        $(`.alert__main`).removeClass(`animate-alert`);
+      },500);
+      if (signal) $(`.alert__audio`).attr(`src`,`./sounds/alert.wav`);
+    },
+    events() {
+      function end_() {
+        $(`.alert`).hide()
+        $(`.alert__audio`).attr(`src`,`#`);
+      }
+        $(`.alert__close`).on(`click`,end_)
+        $(`.alert`).on(`click`,function (event) {
+          if ($(event.target).is(`.alert`)) {
+            end_()
+          }
+        })
+    }
+  }
 };
-inst.functionsFromObject(system);
 const calculator = {
   innit() {
     var history = [``],
@@ -376,23 +206,24 @@ const calculator = {
       fast.push([48 + i, i]);
     }
     var placeInArea = false,
-      selectionStart , focusIn=false;
-    function keys(event,areaVal) {
+      selectionStart,
+      focusIn = false;
+    function keys(event, areaVal) {
       const keyCodes = [
         [53, `%`, event.shiftKey],
-				[54, `^`, event.shiftKey],
-				[57,`(`,event.shiftKey],
-				[48,`)`,event.shiftKey],
-				[107, `+`],
+        [54, `^`, event.shiftKey],
+        [57, `(`, event.shiftKey],
+        [48, `)`, event.shiftKey],
+        [107, `+`],
         [109, `-`],
         [111, `/`],
         [106, `*`],
         [190, `.`],
-				...fast,
+        ...fast,
         [69, `e`],
         [80, `Pi`],
-        [76, `log()()`],
-        [83, `()&#8730;()`],
+        [76, `log{}{}`],
+        [83, `{}&#8730;{}`],
         [187, goToCompile, event.altKey], //=
         [72, moveHistory, event.altKey], //h
         [82, clear, event.altKey], //r
@@ -403,15 +234,14 @@ const calculator = {
       for (let i = 0; i < keyCodes.length; i++) {
         if (event.which == keyCodes[i][0] && keyCodes[i][2]) {
           if (typeof keyCodes[i][1] == `function`) keyCodes[i][1]();
-					else insertKey(keyCodes[i][1],areaVal.split(``));
-					break
-				}
+          else insertKey(keyCodes[i][1], areaVal.split(``));
+          break;
+        }
       }
     }
     function moveHistory() {
       if (!history.length) {
-        if (area.val().length==1)
-        area.val(``);
+        if (area.val().length == 1) area.val(``);
         return;
       }
       if (!changeHistory) history.pop();
@@ -420,16 +250,16 @@ const calculator = {
         area.val(history.pop());
         changeHistory = true;
       }
-		}
-		function insertKey(val,text) {
-			changeHistoryFunc(text.join(``) + val);
-        if (placeInArea) {
-          text.splice(selectionStart, 0, val);
-          selectionStart += val.length;
-          area.val(text.join(``));
-        } else area.val(text.join(``) + val);
-        changeHistory = false;
-		}
+    }
+    function insertKey(val, text) {
+      changeHistoryFunc(text.join(``) + val);
+      if (placeInArea) {
+        text.splice(selectionStart, 0, val);
+        selectionStart += val.length;
+        area.val(text.join(``));
+      } else area.val(text.join(``) + val);
+      changeHistory = false;
+    }
     function clear() {
       area.val(``);
       changeHistoryFunc(``);
@@ -448,258 +278,653 @@ const calculator = {
       .each(function () {
         if (!$(this).attr(`value`)) $(this).attr(`value`, $(this).text());
       });
-    $(`.calculator`).hide();
+    //$(`.calculator`).hide();
     $(`.calculator__control div`).on(`click`, function () {
       const val = $(this).attr(`value`);
       var text = area.val().split(``);
       if (val == `clear`) clear();
       else if (val == "history") moveHistory();
-      else if (val==`go`) goToCompile();
-      else insertKey(val,text);
+      else if (val == `go`) goToCompile();
+      else insertKey(val, text);
     });
     area.on(`keyup`, function (key) {
-      if (key.which==13 && key.ctrlKey) {
+      if (key.which == 13 && key.ctrlKey) {
         goToCompile();
-        $(this).blur()
+        $(this).blur();
         return;
       }
       changeHistoryFunc($(this).val());
-      changeHistory=false;
+      changeHistory = false;
     });
     area.on(`focusout`, function () {
-			focusIn=false;
+      focusIn = false;
       const prop_ = area.prop(`selectionStart`);
       if (prop_ != area.val().length) {
         placeInArea = true;
         selectionStart = prop_;
       } else placeInArea = false;
-		});
-		area.on(`focusin`,function () {
-			focusIn=true;
-		})
+    });
+    area.on(`focusin`, function () {
+      focusIn = true;
+    });
     $(window).on(`keyup`, (event) => {
-			if (focusIn || event.which==18 || event.which==16 || $(`.calculator`).attr(`active`)==`false`) return;
-      keys(event,area.val());
+      if (
+        focusIn ||
+        event.which == 18 ||
+        event.which == 16 ||
+        $(`.calculator`).attr(`active`) == `false`
+      )
+        return;
+      keys(event, area.val());
     });
   },
   move: new Move($(`.calculator`)),
   compile() {
-    const mass=$(`.calculator__input`).val().trim().split(``);
-    var count=[] , error=false;
+    const mass = $(`.calculator__input`)
+      .val()
+      .split(``)
+      .filter(function (elem) {
+        if (elem != `` || elem != `/n`) return elem;
+      });
+    var count = [],
+      error = false,
+      actionMass = [];
     function errorLog() {
-      $(`.calculator__result`).text(`error`)
+      $(`.calculator__result`).text(`error`);
     }
-    const process={
+    const process = {
       separateBySign() {
-        var from=0;
-        function isTrigger(sign,searchForDugs=false) {
-          var value=false;
-          var triggers=[`+`,`-`,`*`,`/`,`%`,`^`,`)`,`(`];
+        var from = 0;
+        function isTrigger(sign, searchForDugs = false) {
+          var value = false;
+          var triggers = [`+`, `-`, `*`, `/`, `%`, `^`, `)`, `(`, `{`, `}`];
           if (searchForDugs) {
-            triggers.pop()
-            triggers.pop()
+            for (let i = 0; i < 4; i++) {
+              triggers.pop();
+            }
           }
-          for (let i=0;i<triggers.length;i++) {
-            if (triggers[i]==sign) {
-              value=true;
-              break
+          for (let i = 0; i < triggers.length; i++) {
+            if (triggers[i] == sign) {
+              value = true;
+              break;
             }
           }
           return value;
         }
         function dugs() {
-          var value=false;
-          if (mass.indexOf(`(`)!=-1 && find(`(`)!=find(`)`)) {
-            value=true;
+          var value = false;
+          if (
+            mass.indexOf(`(`) != -1 &&
+            (find(`(`) != find(`)`) || find(`{`) != find(`}`))
+          ) {
+            value = true;
           }
           function find(char) {
-            var number=0;
+            var number = 0;
             mass.forEach(function (elem) {
-              if (elem==char) number++;
-            })
+              if (elem == char) number++;
+            });
             return number;
           }
           return value;
         }
-        for (let i=0;i<mass.length;i++) {
-            if (isTrigger(mass[i])) {
-              var num=mass.slice(from,i);
-              const values=[
-                num.length==0,
-                i==mass.length-1,
-                isTrigger(mass[i+1],true),
-                dugs()
-              ].forEach(function (elem) {
-                if (elem) error=true;
-              })
-              if (error) break;
-              count.push(num.join(``),mass[i]);
-              from=i+1;
+        for (let i = 0; i < mass.length; i++) {
+          if (isTrigger(mass[i])) {
+            var num = mass.slice(from, i);
+            function fast_() {
+              return (
+                mass[i] != `(` &&
+                mass[i] != `)` &&
+                mass[i] != `{` &&
+                mass[i] != `}`
+              );
             }
-          if (i==mass.length-1)
-            count.push(mass.slice(from,i+1).join(``))
+            if (
+              (isTrigger(mass[i + 1], true) && fast_()) ||
+              (i == mass.length - 1 && isTrigger(mass[i], true))
+            )
+              error = true;
+            if (num.length != 0) count.push(num.join(``), mass[i]);
+            else if (num.length == 0 && isTrigger(mass[i])) count.push(mass[i]);
+            from = i + 1;
+          }
+          const fast_ = mass.slice(from, i + 1);
+          if (i == mass.length - 1 && fast_ != ``) count.push(fast_.join(``));
         }
-        if (count.length==0) error=true;
-        console.log(count);
+        if (count.length == 0 || dugs()) error = true;
       },
-      doStuffWithDugs() {
-        if (error) {
-          errorLog();
-          return;
+      separateByActions() {
+        const alphabet = [
+          "a",
+          "b",
+          "c",
+          "d",
+          "e",
+          "f",
+          "g",
+          "h",
+          "i",
+          "j",
+          "k",
+          "l",
+          "m",
+          "n",
+          "o",
+          "p",
+          "q",
+          "r",
+          "s",
+          "t",
+          "u",
+          "v",
+          "w",
+          "x",
+          "y",
+          "z",
+        ];
+        function getCode() {
+          var codeMass = [];
+          for (let i = 0; i < 14; i++) {
+            var char;
+            if (inst.random(1, 2) == 1) {
+              char = [...alphabet].sort(function () {
+                return 0.5 - Math.random();
+              })[0];
+            } else {
+              char = inst.random(0, 9);
+            }
+            codeMass.push(char);
+          }
+          return codeMass.join(``);
         }
-
-      }
-    }
+        for (let i = 0; i < count.length; i++) {
+          if (count[i] == `(`) {
+            getEndDug(i + 1);
+            i = 0;
+          }
+        }
+        function getEndDug(startIndex) {
+          recurs(startIndex);
+          function recurs(i, num = 0) {
+            var mass = count.slice(i, count.length);
+            for (let ind = 0; ind < mass.length; ind++) {
+              elem = mass[ind];
+              if (elem == `)`) {
+                const val_ = count.slice(i, i + ind),
+                code_ = getCode();
+                actionMass.push({
+                  num: num,
+                  val: val_,
+                  code: code_,
+                });
+                count.splice(i - 1, val_.length + 2, `:${code_}:`);
+                return i;
+              } else if (elem == `(`)
+              i=recurs(i + ind + 1, ++num);
+            }
+          }
+          //1+(2+(3+4)+(5+6))
+        }
+      },
+    };
     process.separateBySign();
-    process.doStuffWithDugs();
+    process.separateByActions();
+    console.log(actionMass);
+    console.log(count);
   },
 };
-calculator.innit();
-const game={
+const game = {
   innit() {
-    var massElem=[$(`.game__process`),$(`.game__final-result`),$(`.game__opponent`).find(`[alt="typical"]`),$(`.my-hand`)].forEach(function (elem) {
-      elem.hide()
-    })
+    var massElem = [
+      $(`.game__process`),
+      $(`.game__final-result`),
+      $(`.game__opponent`).find(`[alt="typical"]`),
+      $(`.my-hand`),
+    ].forEach(function (elem) {
+      elem.hide();
+    });
     $(`.game__main-select`).show();
-    var clickSelected=false , roundsNum, noOneWins=false , currentRound=0;
-    const me={
-      counts:0,
-      select:``,
-      prevSelect:``
+    $(`#wins`).text(0);
+    $(`#defaults`).text(0);
+    var clickSelected = false,
+      roundsNum,
+      noOneWins = false,
+      currentRound = 0;
+    const mass = ["rock", "paper", "scissors"];
+    const tactics = [
+      [
+        ["rock", "rock", "rock"],
+        ["paper", "paper", "paper"],
+        ["scissors", "scissors", "scissors"],
+      ],
+      ["paper", "scissors", "rock"],
+      ["rock", "scissors", "paper"],
+      [
+        ["rock", "paper", "paper"],
+        ["scissors", "paper", "paper"],
+        ["paper", "scissors", "paper"],
+      ],
+    ];
+    tactics.forEach(function (elem) {
+      if (typeof elem[0] == `object`)
+        elem.sort(function () {
+          return 0.5 - Math.random();
+        });
+      else elem.push(...elem, ...elem);
+    });
+    class Player {
+      counts = 0;
+      select = ``;
+      prevWin = "static";
+      prevSelect = ``;
     }
-    const opponent={
-      counts:0,
-      prevWin:'static',
-      select:``,
-      prevSelect:``,
-      tactic:inst.random(0,1)
+    class Opponent extends Player {
+      tactic = inst.random(0, 1);
+      index = inst.random(0, 3);
+      howToPlay = [...tactics[this.index]].flat();
     }
-    const mass=["rock","paper","scissors"];
-      const tactics=[
-        [["rock","rock","rock"],["paper","paper","paper"],["scissors","scissors","scissors"]],
-        ["paper","scissors","rock"],
-        ["rock","scissors","paper"],
-        [["rock","paper","paper"],["scissors","paper","paper"],["paper","scissors","paper"]]
-      ];
-      tactics.forEach(function (elem) {
-        if (typeof(elem[0])==`object`) elem.sort(function () {return 0.5-Math.random()})
-        else elem.push(...elem,...elem);
-      })
-      const howToPlay=tactics[inst.random(0,3)].flat()
+    const me = new Player();
+    const opponent = new Opponent();
     function setRounds() {
-      $(`.game__round p`).text(currentRound+`/`+roundsNum);
+      $(`.game__round p`).text(currentRound + `/` + roundsNum);
     }
     function animation() {
       function bothAnim(amount) {
-        $($(`.game__you[alt="typical"]`)[0]).css({left:amount});
-        $($(`.game__you[alt="typical"]`)[2]).css({right:amount});
+        const fast_ = $(`.game__you`).find(`[alt="typical"]`);
+        $(fast_[0]).animate({ left: amount }, 1000);
+        $(fast_[2]).animate({ right: amount }, 1000);
       }
-      bothAnim($(`.game__pick`).width()/2-$(`[alt="typical"]`).width()/2);
-      setTimeout(()=>{
-        $(`[alt="typical"]`).hide();
-        $(`.game__pick`).css({"justifyContent":"center"});
+      bothAnim($(`.game__pick`).width() / 2 - $(`[alt="typical"]`).width() / 2);
+      setTimeout(() => {
+        $(`[alt="typical"]`).css({ visibility: "hidden" });
         $(`.my-hand`).show().addClass(`move-up`);
         $(`.opponent-hand`).addClass(`move-down`);
-      },1000);
-      setTimeout(()=>{
-        if ($(`.game`).attr(`active`)==`false`) return;
+        setWidth();
+      }, 1000);
+      setTimeout(() => {
+        if ($(`.game`).attr(`active`) == `false`) return;
         $(`.my-hand`).hide().removeClass(`move-up`);
         $(`.opponent-hand`).hide().removeClass(`move-down`);
-        $(`.game__you`).find(`[type="${me.select}"]`).show();
+        $(`.game__you`)
+          .find(`[type="${me.select}"]`)
+          .css({ visibility: "visible" });
         $(`.game__opponent`).find(`[type="${opponent.select}"]`).show();
         $(`#wins`).text(me.counts);
         $(`#defaults`).text(opponent.counts);
         setRounds();
-        setTimeout(()=>{
-          $(`.game__pick`).removeAttr(`style`);
+        setTimeout(() => {
           bothAnim(0);
-          $(`.game__you`).find(`[type]`).show();
+          $(`.game__you`).find(`[type]`).css({ visibility: "visible" });
           $(`.game__opponent`).find(`[type]`).hide();
           $(`.opponent-hand`).show();
-          setTimeout(()=>{
-            if (me.counts==roundsNum || opponent.counts==roundsNum) {
-              var final_=$(`.game__final-result`);
-              final_.removeClass([`victoryFon`,`defeat`])
-              final_.addClass(`appear`).css({"display":"flex"})
-              if (me.counts>opponent.counts) {
+          setTimeout(() => {
+            if (me.counts == roundsNum || opponent.counts == roundsNum) {
+              var final_ = $(`.game__final-result`);
+              final_.removeClass([`victoryFon`, `defeat`]);
+              final_.addClass(`appear`).css({ display: "flex" });
+              if (me.counts > opponent.counts) {
                 final_.find(`p`).text(`you won`);
-                final_.addClass(`victoryFon`)
+                final_.addClass(`victoryFon`);
               } else {
                 final_.find(`p`).text(`you lost`);
-                final_.addClass(`defeat`)
+                final_.addClass(`defeat`);
               }
             }
-          },500);
-        },500);
-      },4000);
+          }, 500);
+        }, 500);
+      }, 4000);
     }
     function result() {
       //!!select opponent
-      if (opponent.tactic==0) {
-        if (!noOneWins) opponent.select=howToPlay.shift();
-      }
-       else {
-        if (opponent.prevWin!=`static` && opponent.prevWin) opponent.select=opponent.prevSelect;
-        else if (opponent.prevWin==`static`) opponent.select=mass[inst.random(0,2)];
+      if (opponent.tactic == 0) {
+        if (!noOneWins) {
+          var elem_ = opponent.howToPlay.shift();
+          if (!elem_) {
+            opponent.howToPlay.push(...tactics[opponent.index]);
+            elem_ = opponent.howToPlay.shift();
+          }
+          opponent.select = elem_;
+        }
+      } else {
+        if (opponent.prevWin != `static` && opponent.prevWin)
+          opponent.select = opponent.prevSelect;
+        else if (opponent.prevWin == `static`)
+          opponent.select = mass[inst.random(0, 2)];
         else {
           mass.forEach(function (elem) {
-            if (me.prevSelect!=elem && opponent.prevSelect!=elem) opponent.select=elem;
-          })
+            if (me.prevSelect != elem && opponent.prevSelect != elem)
+              opponent.select = elem;
+          });
         }
       }
       currentRound++;
       //!!who won
-      me.prevSelect=me.select;
-      opponent.prevSelect=opponent.select;
-      if (me.select==opponent.select) {
-        opponent.prevWin=`static`;
-        noOneWins=true;
-      }
-      else {
-        if ((me.select=="scissors" && opponent.select=="paper") || (me.select=="paper" && opponent.select=="rock") || (me.select=="rock" && opponent.select=="scissors")) {
+      me.prevSelect = me.select;
+      opponent.prevSelect = opponent.select;
+      if (me.select == opponent.select) {
+        opponent.prevWin = `static`;
+        noOneWins = true;
+      } else {
+        if (
+          (me.select == "scissors" && opponent.select == "paper") ||
+          (me.select == "paper" && opponent.select == "rock") ||
+          (me.select == "rock" && opponent.select == "scissors")
+        ) {
           me.counts++;
-          opponent.prevWin=false;
-        }
-        else {
+          opponent.prevWin = false;
+        } else {
           opponent.counts++;
-          opponent.prevWin=true;
+          opponent.prevWin = true;
         }
-        noOneWins=false;
+        noOneWins = false;
       }
     }
-    const eventFunc=[
-    [$(`.click`),function () {
-      if (clickSelected) return;
-      clickSelected=true;
-      setTimeout(()=>{
-        clickSelected=false;
-        $(this).removeAttr(`style`);
-        $(`.game__process`).fadeIn(500).css({display:"flex"});
-        $(`.game__sounds`).attr(`src`,`./sounds/gameStarts.mp3`);
-        setRounds()
-      },1500);
-      setTimeout(()=>{
-        $(`.game__main-select`).fadeOut(500);
-      },1000);
-      $(this).css({background:`#F43F52`});
-      roundsNum=+$(this).find(`p`).attr(`value`);
-    }],
-    [$(`.game__you`).find(`[alt]`),function () {
-      if (clickSelected) return;
-      clickSelected=true;
-      setTimeout(()=>{clickSelected=false},5000);
-      me.select=$(this).attr(`type`);
-      result();
-      animation();
-    }],
-    [$(`.game__repeat`),function () {
-      game.innit();
-    }]
-  ]
-    $(`.click`).on(`click`,eventFunc[0]);
-    $(`.game__you`).find(`[alt]`).on(`click`,eventFunc[1]);
-    $(`.game__repeat`).on(`click`,eventFunc[2])
+
+    var events = [
+      [
+        $(`.click`),
+        function () {
+          if (clickSelected) return;
+          clickSelected = true;
+          setTimeout(() => {
+            clickSelected = false;
+            $(this).removeAttr(`style`);
+            $(`.game__process`).fadeIn(500).css({ display: "flex" });
+            $(`.game__sounds`).attr(`src`, `./sounds/gameStarts.mp3`);
+            setRounds();
+          }, 1500);
+          setTimeout(() => {
+            $(`.game__main-select`).fadeOut(500);
+          }, 1000);
+          $(this).css({ background: `#F43F52` });
+          roundsNum = +$(this).find(`p`).attr(`value`);
+        },
+      ],
+      [
+        $(`.game__you`).find(`[alt]`),
+        function () {
+          if (clickSelected) return;
+          clickSelected = true;
+          setTimeout(() => {
+            clickSelected = false;
+          }, 5000);
+          me.select = $(this).attr(`type`);
+          result();
+          animation();
+        },
+      ],
+      [$(`.game__repeat`), game.innit],
+    ].forEach(function (elem) {
+      elem[0].off(`click`);
+      elem[0].on(`click`, elem[1]);
+    });
+    function setWidth() {
+      $(`.my-hand`).css({
+        left: $(`.game__pick`).width() / 2 - $(`.my-hand`).width() / 2,
+      });
+    }
+    $(window).off(`resize`);
+    $(window).on(`resize`, setWidth);
   },
-  move: new Move($(`.game`))
-}
-game.innit()
+  move: new Move($(`.game`)),
+};
+const timeManagement = {
+  move: new Move($(`.time`)),
+  events() {
+    $(`.time__circle`).on(`click`, function () {
+      if ($(this).hasClass(`selected-ball`)) return;
+      $(`.time__circle`).removeClass(`selected-ball`);
+      $(this).addClass(`selected-ball`);
+      $(`[time-el]`).fadeOut(300);
+      setTimeout(() => {
+        const type=$(this).attr(`type`);
+        $(`.time__` + type)
+          .fadeIn(300)
+          .css({ display: "flex" });
+          if (type==`timer`) $(`.time__main`).css({height:$(`.time__main`).width()})
+      }, 300);
+    });
+  },
+  stopWatch: {
+    timer : {
+      allowTimer: false,
+      atFirst: true,
+      milliSeconds:0,
+      seconds:0,
+      minutes:0,
+      hours:0,
+      numOfLoops:0,
+      process() {
+        function fast(val,num,next) {
+          if (this[val]==num) {
+            this[val]=0;
+            this[next]++;
+          }
+        }
+        fast=fast.bind(this);
+        timer_=timeManagement.stopWatch.timer;
+        this.interval = setInterval(() => {
+          if (!this.allowTimer) return;
+          this.milliSeconds++;
+          fast(`milliSeconds`,100,`seconds`);
+          fast(`seconds`,60,`minutes`);
+          fast(`minutes`,60,`hours`);
+          if (hours==24) this.clear();
+          this.insert();
+        },10);
+      },
+      clear() {
+        this.milliSeconds=this.seconds=this.minutes=this.hours=0;
+        this.atFirst = true;
+        this.allowTimer=false;
+        this.numOfLoops=0;
+        clearInterval(this.interval);
+        $($(`.time__manage div`)[0]).find(`img`).attr(`src`, inst.getDirection(`play2`));
+        $(`.time__box`).empty()
+        this.insert()
+      },
+      insert(){
+        var mass=[
+          [this.milliSeconds,`milliSeconds`],
+          [this.seconds,`seconds`],
+          [this.minutes,`minutes`],
+          [this.hours,`hours`]
+        ].forEach(function (elem) {
+          $(`.time__`+elem[1]).text(inst.convertTime(elem[0]))
+        })
+      },
+      getDifference() {
+        var data=[];
+        var mass=[`hours`,`minutes`,`seconds`,`milliSeconds`].forEach(function (elem) {
+          data.push([]);
+          $(`.`+elem).each(function () {
+            data[data.length-1].push(+$(this).text())
+          });
+          var taker_=data[data.length-1];
+          if (taker_.length) {
+            var reduced=taker_.reduce(function (a,b) {
+              return a+b;
+            })
+            data[data.length-1]=reduced;
+          }
+        })
+        var hours=(data[0]) ? this.hours-data[0] : this.hours;
+        var minutes=(data[1]) ? this.minutes-data[1] : this.minutes;
+        var seconds=(data[2]) ? this.seconds-data[2] : this.seconds;
+        var milliSeconds=(data[3]) ? this.milliSeconds-data[3] : this.milliSeconds;
+        while (milliSeconds<0) {
+          milliSeconds=100+milliSeconds;
+          seconds--;
+        }
+        while (seconds<0) {
+          seconds=60+seconds;
+          minutes--;
+        }
+        while (minutes<0) {
+          minutes=60+minutes;
+          hours--;
+        }
+        var result=[];
+        var mass=[hours,minutes,seconds,milliSeconds].forEach(function (elem) {
+          result.push(inst.convertTime(elem))
+        })
+        return result;
+      },
+    },
+    events() {
+      $(`.time__manage div`).on(`click`, (event)=> {
+        var target=$(event.target);
+        const type_ = target.is(`img`) || target.is(`p`) || target.is(`.box`) ? target.parent().attr(`type`) : target.attr(`type`), timer=this.timer;
+        var img = $($(`.time__manage div`)[0]).find(`img`);
+        if (type_ == `loop` && timer.allowTimer) {
+          var diff=timer.getDifference();
+          var str = `<div class="center">
+          <div class="time__fool center">
+            <div class="time__loop-status beet">
+              <div class="bigSize">${++timer.numOfLoops}</div>
+              <div class="beet">
+                <p>${inst.convertTime(timer.hours)}</p>
+                <p>:</p>
+                <p>${inst.convertTime(timer.minutes)}</p>
+                <p>:</p>
+                <p>${inst.convertTime(timer.seconds)}</p>
+                <p>:</p>
+                <p>${inst.convertTime(timer.milliSeconds)}</p>
+              </div>
+              <div class="beet time__diff">
+                <p>+</p>
+                <p class="hours" get>${diff[0]}</p>
+                <p>:</p>
+                <p class="minutes" get>${diff[1]}</p>
+                <p>:</p>
+                <p class="seconds" get>${diff[2]}</p>
+                <p>:</p>
+                <p class="milliSeconds" get>${diff[3]}</p>
+              </div>
+            </div>
+          </div>
+        </div>`;
+        $(`.time__box`).append(str);
+        } else if (type_ == `play-pause`) {
+          timer.allowTimer = !timer.allowTimer;
+          timer.allowTimer
+            ? img.attr(`src`, inst.getDirection(`pause2`))
+            : img.attr(`src`, inst.getDirection(`play2`));
+          if (timer.atFirst) {
+            timer.atFirst = false;
+            timer.process();
+          }
+        } else if (type_==`end`) timer.clear()
+      });
+    },
+  },
+  alarmClock:{
+    canvas:document.querySelector(`canvas`),
+    alert:system.alertWindow.start,
+    events() {
+      function setCircleSize() {
+        $(`.time__main`).css({height:$(`.time__main`).width()})
+      }
+        setCircleSize()
+      $(window).on(`resize`,setCircleSize)
+      $(`.seePicture`).on(`mouseenter`,function () {
+        $(`.time__grid`).css({display:"grid"})
+      })
+      $(`.time__select-img`).on(`mouseleave`,function () {
+        $(`.time__grid`).hide()
+      })
+      const img_=$(`.seePicture`).find(`img`);
+      $(`.time__grid-cont div`).on(`click`,function () {
+        $(this).siblings().removeAttr(`style`);
+        $(this).css({background:`#E74C3C`})
+        img_.attr(`src`,$(this).find(`img`).attr(`src`));
+        $(`.time__grid`).hide()
+      })
+      $(`.timer-go`).on(`click`,()=> {
+        var hours=+$(`.select-hours`).val() || 0, minutes=+$(`.select-minutes`).val() || 0, seconds=+$(`.select-seconds`).val() || 0;
+        if ((!hours && !minutes && !seconds) || img_.attr(`src`)==`./images/picture.png` || $(`.timer-go`).attr(`active`)==`true`) {
+          this.alert("the main data is not set")
+          return;
+        }
+        $(`.timer-go`).attr(`active`,true);
+        var value=seconds+minutes*60+hours*3600;
+        if (value>21600 || value<10) {
+          this.alert("value is unsuitable")
+          return;
+        }
+        while (seconds>=60) {
+          minutes++;
+          seconds-=60;
+        }
+        while (minutes>=60) {
+          hours++;
+          minutes-=60;
+        }
+        this.start(seconds,minutes,hours,value)
+      })
+      $(`.time__closeTimer`).on(`click`,()=>{
+        this.stop()
+      })
+    },
+    start(sec,min,hour,val) {
+      const canvas=this.canvas;
+      const ctx=canvas.getContext("2d") , globalVal=val , str=`${inst.convertTime(hour)}:${inst.convertTime(min)}:${inst.convertTime(sec)}`;
+      canvas.width=canvas.height=150;
+      $(`.time__input`).val(``);
+      $(`.time__put-image`).find(`img`).attr(`src`,$(`.seePicture`).find(`img`).attr(`src`));
+      $(`.time__put-image`).css({display:"flex"})
+      this.interval=setInterval(()=>{
+        val--;
+        if (val==0) {
+          this.alert(`your time is over , you had ${str}`,true)
+          this.stop();
+          return;
+        }
+        sec--;
+        if (sec<0) {
+          sec=59;
+          min--;
+        }
+        if (min<0) {
+          min=59;
+          hour--;
+        }
+        var shower=2*val/globalVal;
+        var color;
+        if (shower>=1.4) color="#2E86C1"
+        else if (shower<1.4 && shower>=0.7) color="#A569BD"
+        else color="#E74C3C"
+        $(`.hours2`).text(inst.convertTime(hour));
+        $(`.minutes2`).text(inst.convertTime(min))
+        $(`.seconds2`).text(inst.convertTime(sec));
+        ctx.beginPath();
+        ctx.clearRect(0,0,canvas.width,canvas.width)
+        var fill_=canvas.width/2;
+        ctx.arc(fill_,fill_,fill_,0,shower*Math.PI);
+        ctx.fillStyle=color;
+        ctx.fill()
+        ctx.stroke();
+      },1000);
+    },
+    stop() {
+      clearInterval(this.interval);
+      $(`.timer-go`).attr(`active`,false);
+      $(`.time__put-image`).hide()
+      $(`.seconds2`).text(`00`);
+      this.canvas.width=this.canvas.width;
+    }
+  },
+  timer:{
+    events() {
+
+    }
+  }
+};
+//start
+inst.functionsFromObject(system);
+calculator.innit();
+timeManagement.events();
+[`stopWatch`,`alarmClock`,`timer`].forEach(function (elem) {
+  timeManagement[elem].events();
+})
+system.alertWindow.events()
