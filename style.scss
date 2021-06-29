@@ -1,5 +1,6 @@
 @import "C:/My/Photoshop/all.scss";
 @import url("https://fonts.googleapis.com/css2?family=Goblin+One&display=swap");
+
 body {
   max-width: 1920px;
   font-family: "Goblin One", cursive;
@@ -13,23 +14,28 @@ $gray2: #322f2f;
   background-size: cover;
   background-position: center;
   overflow: hidden;
+
   &__day-show {
     width: 5.2vw;
     min-width: 30px;
     object-fit: contain;
   }
+
   &__title {
     text-align: center;
   }
+
   &__date,
   &__time2 {
     font-size: calc(17px + (80 - 17) * (100vw / 1920));
     @include min(80, 1920);
   }
+
   &__time2 {
     margin-top: 10px;
     margin-left: 30px;
   }
+
   &__quote {
     font-family: "Arial";
     width: 60%;
@@ -39,12 +45,14 @@ $gray2: #322f2f;
     font-size: calc(14px + (35 - 14) * (100vw / 1920));
     @include min(35, 1920);
     font-style: italic;
+
     span {
       color: rgb(247, 229, 229);
       font-family: "Goblin One", cursive;
       font-weight: 100;
     }
   }
+
   &__inst {
     height: 200px;
     width: 60px;
@@ -52,57 +60,73 @@ $gray2: #322f2f;
     position: absolute;
     top: 10px;
     right: 10px;
+
     & div:first-child {
       img {
         width: 55%;
       }
     }
+
     & div:nth-child(2) {
       img {
         width: 60%;
       }
     }
+
     & div:last-child {
       img {
         width: 70%;
       }
     }
+
     @media (max-width: 450px) {
       height: 140px;
+      top: 60px;
+      right: 0;
+      z-index: 21;
     }
   }
+
   &__sounds {
-    z-index: 10;
+    z-index: 30;
     position: absolute;
     bottom: 10px;
     right: 10px;
   }
+
   &__sounds-container {
     right: 10px;
   }
+
   &__videous {
     bottom: 10px;
     left: 10px;
     position: absolute;
     z-index: 10;
   }
+
   &__notes {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    right: 10px;
     z-index: 10;
+
     .command {
       img {
         width: 60%;
       }
     }
+    @media(max-width:450px) {
+      z-index: 30;
+    }
   }
+
   &__sounds,
   &__videous {
     .command img {
       width: 60%;
     }
   }
+
   // .system__video-big
 
   &__video-big {
@@ -110,12 +134,14 @@ $gray2: #322f2f;
     display: flex;
     justify-content: center;
   }
+
   video {
     width: 100%;
     height: 100%;
     position: absolute;
     object-fit: contain;
   }
+
   // .system__vid-attr
 
   &__vid-attr {
@@ -123,9 +149,11 @@ $gray2: #322f2f;
     bottom: 10px;
     position: absolute;
     height: 50px;
+
     @media (max-width: 800px) {
       width: calc(100% - 160px);
     }
+
     display: none;
   }
 
@@ -144,44 +172,56 @@ $gray2: #322f2f;
       height: 15px;
       border-radius: 50%;
       cursor: pointer;
+      position: relative;
+      z-index: 12;
       &:hover {
         transition: all 0.3s ease;
         opacity: 0.8;
       }
     }
   }
+
   &__progress-bar {
     height: 5px;
     border-radius: 5px;
     background: #092b6c;
+
     &:hover {
       transition: all 0.3s ease;
       opacity: 0.8;
     }
   }
+
   // .system__control
   &__control {
     width: 100%;
     color: #a1c7d6;
+    margin-top: 10px;
   }
+
   // .system__buttons
   &__buttons {
     width: 100px;
+
     img {
       width: 21px;
       object-fit: contain;
       cursor: url(./images/hand.png), default;
     }
   }
+
   @media (max-width: 450px) {
+
     &__videous,
     &__sounds {
       bottom: 80px;
     }
+
     &__vid-attr {
       width: 95%;
     }
   }
+
   // .system__cont-audio
 
   &__cont-audio {
@@ -193,6 +233,26 @@ $gray2: #322f2f;
     right: 0;
     display: none;
   }
+  &__vol-audio{
+    top: -70px;
+    width: 260px;
+    color:#092b6c;
+    text-shadow: 1px 1px 1px white;
+    input{
+        appearance: none;
+        height: 5px;
+        background:  #0da6e4;
+        border-radius: 5px;
+        &::-webkit-slider-thumb{
+          background: white;
+          height: 15px;
+          width: 7px;
+          border-radius: 5px;
+          appearance: none;
+          cursor: url(./images/hand.png), default;
+        }
+    }
+  }
 }
 .black {
   background: black;
@@ -201,23 +261,29 @@ $gray2: #322f2f;
 .hover-inst {
   animation: hover-inst 0.5s linear;
 }
+
 @keyframes hover-inst {
   0% {
     transform: rotate(0deg);
   }
+
   25% {
     transform: rotate(30deg);
   }
+
   50% {
     transform: rotate(0deg);
   }
+
   75% {
     transform: rotate(-30deg);
   }
+
   100% {
     transform: rotate(0deg);
   }
 }
+
 .command {
   width: 60px;
   border-radius: 50%;
@@ -228,14 +294,18 @@ $gray2: #322f2f;
   align-items: center;
   position: relative;
   cursor: url(./images/hand.png), default;
+
   img {
     object-fit: contain;
   }
+
   &:hover {
     background: #0da6e4;
     transition: all 0.5s linear;
   }
+
   @media (max-width: 450px) {
+    z-index: 600;
     width: 40px;
     height: 40px;
   }
@@ -246,6 +316,7 @@ $gray2: #322f2f;
   width: 200px;
   position: absolute;
   top: -280px;
+
   div {
     width: 100%;
     border-top-left-radius: 8px;
@@ -254,30 +325,33 @@ $gray2: #322f2f;
     background: white;
     position: relative;
     justify-content: stretch !important;
-    background: linear-gradient(
-      198deg,
-      rgba(9, 43, 108, 1) 30%,
-      rgba(13, 166, 228, 1) 69%
-    );
+    background: linear-gradient(198deg,
+        rgba(9, 43, 108, 1) 30%,
+        rgba(13, 166, 228, 1) 69%);
     cursor: url(./images/hand.png), default;
+
     & p:first-child {
       padding-left: 4px;
       color: white;
     }
+
     &:hover {
       background: #0da6e4;
       transition: all 0.5s ease;
       color: rgba(9, 43, 108, 1);
+
       & p:first-child {
         color: rgba(9, 43, 108, 1);
       }
     }
   }
+
   img {
     width: 20px;
     position: absolute;
     right: 5px;
   }
+
   .over {
     max-height: 20px;
     overflow: auto;
@@ -286,28 +360,31 @@ $gray2: #322f2f;
   }
 }
 .calculator {
-  background: #092b6c;
   width: 35%;
-  min-width: 300px;
-  position: absolute;
+  background: #092b6c;
   z-index: 20;
-  display: grid;
-  grid-template-columns: 1fr;
+  position: absolute !important;
+  min-height: 550px;
   grid-gap: 20px;
   border-radius: 5px;
   color: #322f2f;
   font-weight: 800;
-  justify-items: center;
+  min-width: 310px;
   max-width: 450px;
-  & > div,
+  justify-content: stretch;
+  display: none;
+
+  &>div,
   textarea {
     width: calc(100% - 20px);
   }
+
   // .calculator__title
 
   &__title {
     margin-top: 5px;
     height: 30px;
+
     p {
       padding-left: 10px;
     }
@@ -321,6 +398,7 @@ $gray2: #322f2f;
     height: 100%;
     background: #075b7d;
     cursor: url(./images/hand.png), default;
+
     &:hover {
       background: #cae8f4;
       transition: all 0.3s ease;
@@ -336,12 +414,14 @@ $gray2: #322f2f;
     background: #0da6e4;
     border: 3px solid white;
     border-radius: 5px;
+
     &:focus {
       transition: all 0.3s ease;
       background: #075b7d;
       border: 3px solid#0da6e4;
       outline: none;
     }
+
     &::placeholder {
       color: #322f2f;
       font-weight: 800;
@@ -355,6 +435,7 @@ $gray2: #322f2f;
     height: 30px;
     background: white;
     border-radius: 10px;
+
     & p {
       padding-right: 10px;
     }
@@ -363,12 +444,15 @@ $gray2: #322f2f;
   // .calculator__control
 
   &__control {
+    background: #092b6c;
     display: grid;
     grid-gap: 10px;
     grid-template-columns: repeat(4, 1fr);
     grid-auto-rows: 1fr;
-    height: 210px;
-    padding-bottom: 60px;
+    height: 20px;
+    height: 280px;
+    padding-bottom: 40px;
+
     div {
       height: 35px;
       border-radius: 5px;
@@ -379,11 +463,13 @@ $gray2: #322f2f;
       font-size: 20px;
       cursor: url(./images/hand.png), default;
       background: #cae8f4;
+
       &:hover {
         border-radius: 20px;
         transition: all 0.3s ease;
         background: #0da6e4;
       }
+
       img {
         height: 30px;
       }
@@ -404,27 +490,33 @@ $gray2: #322f2f;
   position: absolute;
   border-radius: 5px;
   background: $green;
-  & > div {
+
+  &>div {
     width: calc(100% - 20px);
   }
+
   &__title {
     @extend .calculator__title;
     color: #322f2f;
+
     p {
       max-height: 20px;
       overflow: auto;
       width: 80%;
     }
   }
+
   &__move {
     @extend .calculator__move;
     background: $gray;
   }
+
   &__field {
     height: 340px;
     position: relative;
     bottom: 20px;
   }
+
   // .game__main-select
 
   &__main-select {
@@ -434,6 +526,7 @@ $gray2: #322f2f;
       color: $blue;
       text-align: center;
     }
+
     z-index: 2;
   }
 
@@ -445,18 +538,21 @@ $gray2: #322f2f;
     height: 310px;
     color: $yellow;
     font-size: 30px;
-    & > div {
+
+    &>div {
       background: $gray;
       height: 65px;
       width: 60%;
       min-width: 230px;
       border-radius: 20px;
       cursor: url(./images/hand.png), default;
+
       &:hover {
         transition: all 0.3s ease;
         background: $yellow;
         color: $gray;
       }
+
       transition: all 0.3s ease;
     }
   }
@@ -465,6 +561,7 @@ $gray2: #322f2f;
 
   &__block {
     width: 90px;
+
     img {
       display: block;
       width: 30px;
@@ -504,17 +601,21 @@ $gray2: #322f2f;
     grid-template-columns: 90px 120px;
     grid-auto-rows: 1fr;
     grid-gap: 5px;
-    & > div {
+
+    &>div {
       display: flex;
       justify-content: center;
       align-items: center;
       position: relative;
       border: 1px solid $gray;
     }
+
     img {
       width: 30px;
     }
+
     color: $blue;
+
     & div:first-child,
     & div:nth-child(2) {
       font-size: 12px;
@@ -528,6 +629,7 @@ $gray2: #322f2f;
     width: 100%;
     height: 100px;
     top: -10px;
+
     img {
       width: 17%;
     }
@@ -546,18 +648,22 @@ $gray2: #322f2f;
   &__pick {
     width: 80%;
     height: 100%;
+
     img {
       width: 23%;
     }
   }
+
   [alt="typical"] {
     position: relative;
     cursor: url(./images/hand.png), default;
+
     &:hover {
       transform: scale(1.2, 1.2);
       transition: all 0.3s ease;
     }
   }
+
   // .game__final-result
   &__repeat {
     position: absolute;
@@ -568,14 +674,17 @@ $gray2: #322f2f;
     border-radius: 50%;
     background: $gray;
     cursor: url(./images/hand.png), default;
+
     &:hover {
       transition: all 0.3s ease;
       background: $green;
     }
+
     img {
       width: 30px;
     }
   }
+
   &__final-result {
     background-size: cover;
     background-position: center;
@@ -587,16 +696,19 @@ $gray2: #322f2f;
 .my-hand {
   position: absolute;
 }
+
 .opponent-hand {
   position: relative;
-  transform: rotate(180deg);
 }
+
 .move-up {
   animation: move-up 3s linear;
 }
+
 .move-down {
   animation: move-down 3s linear;
 }
+
 [move] {
   img {
     width: 90%;
@@ -606,50 +718,65 @@ $gray2: #322f2f;
   0% {
     top: 0;
   }
+
   14.3% {
     top: 15px;
   }
+
   28.6% {
     top: 0;
   }
+
   42.9% {
     top: 15px;
   }
+
   57.2% {
     top: 0;
   }
+
   71.5% {
     top: 15px;
   }
+
   85.8% {
     top: 0;
   }
+
   100% {
     top: 15px;
   }
 }
+
 @keyframes move-down {
   0% {
     top: 0;
   }
+
   14.3% {
     top: -15px;
   }
+
   28.6% {
     top: 0;
   }
+
   42.9% {
     top: -15px;
   }
+
   57.2% {
     top: 0;
   }
+
   71.5% {
     top: -15px;
   }
+
   85.8% {
     top: 0;
   }
+
   100% {
     top: -15px;
   }
@@ -657,20 +784,25 @@ $gray2: #322f2f;
 .appear {
   animation: appear 0.5s linear;
 }
+
 @keyframes appear {
   0% {
     transform: scale(0.1, 0.1) rotate(210deg);
   }
+
   100% {
     transform: scale(1, 1) rotate(0deg);
   }
 }
+
 .victoryFon {
   background-image: url(./images/victoryFon.jpg);
 }
+
 .defeat {
   background-image: url(./images/defeat.jpg);
 }
+
 .time {
   $purple: #a569bd;
   $blue: #2e86c1;
@@ -686,6 +818,7 @@ $gray2: #322f2f;
   height: 500px;
   border-radius: 20px;
   display: none;
+
   &__title {
     @extend .game__title;
     width: calc(100% - 20px);
@@ -713,20 +846,24 @@ $gray2: #322f2f;
     font-size: 10px;
     color: $blue;
     justify-content: stretch;
+
     p {
       margin-top: 5px;
     }
   }
+
   &__process {
     width: calc(100% - 20px);
     height: 350px;
     margin-top: 10px;
-    & > div {
+
+    &>div {
       width: 100%;
       height: 100%;
       justify-content: stretch;
     }
   }
+
   // .time__circle
 
   &__circle {
@@ -735,10 +872,12 @@ $gray2: #322f2f;
     border-radius: 50%;
     background: #a569bd;
     cursor: url(./images/hand.png), default;
+
     &:hover {
       transition: all 0.3s ease;
       background: $red;
     }
+
     img {
       width: 70%;
     }
@@ -754,25 +893,30 @@ $gray2: #322f2f;
 
   &__manage {
     margin-top: 5px;
-    & > div {
+
+    &>div {
       width: 50px;
       height: 50px;
       border-radius: 50%;
       background: $blue;
       cursor: url(./images/hand.png), default;
+
       p {
         font-size: 14px;
         color: $black;
       }
+
       &:hover {
         transition: all 0.3s ease;
         background: $purple;
+
         & * {
           transition: all 0.3s ease;
           transform: rotate(30deg);
         }
       }
     }
+
     img {
       width: 50%;
     }
@@ -787,39 +931,50 @@ $gray2: #322f2f;
     border: 3px solid $red;
     border-radius: 10px;
     overflow: auto;
-    & > div {
+
+    &>div {
       width: 100%;
       min-height: 30px;
     }
+
     &::-webkit-scrollbar {
       width: 10px;
       background-color: $purple;
     }
+
     &::-webkit-scrollbar-thumb {
       background: $blue;
+      border-radius: 10px;
+      cursor: move;
     }
   }
+
   &__fool {
     border-radius: 5px;
     width: 100%;
     height: 20px;
     background: $blue;
   }
+
   &__loop-status {
     width: 90%;
     height: 100%;
     color: $black;
+
     & p {
       font-size: calc(8px + (20 - 8) * (100vw / 1920));
       @include min(20, 1920);
+
       @media (max-width: 840px) {
         font-size: 10px;
       }
     }
   }
+
   .bigSize {
     font-size: 18px;
   }
+
   .box {
     width: 24px;
     height: 24px;
@@ -840,17 +995,21 @@ $gray2: #322f2f;
     top: 0;
     right: 0;
     cursor: url(./images/hand.png), default;
+
     img {
       width: 70%;
     }
+
     &:hover {
       transition: all 0.3s ease;
       background: $red;
     }
   }
-  &__timer {
+
+  &__alarmClock {
     display: none;
   }
+
   &__main {
     width: 50%;
     border-radius: 50%;
@@ -858,11 +1017,13 @@ $gray2: #322f2f;
     max-width: 220px;
     margin-top: 20px;
   }
+
   canvas {
     width: 100%;
     height: 100%;
     position: absolute;
   }
+
   // .time__info
 
   &__info {
@@ -871,6 +1032,7 @@ $gray2: #322f2f;
     height: 90%;
     position: relative;
     background: $black;
+
     .beet {
       font-size: calc(13px + (25 - 13) * (100vw / 1920));
       @include min(25, 1920);
@@ -879,6 +1041,7 @@ $gray2: #322f2f;
       color: $red;
     }
   }
+
   &__put-image {
     display: none;
     position: absolute;
@@ -887,10 +1050,12 @@ $gray2: #322f2f;
     height: 40px;
     border-radius: 50%;
     background: $purple;
+
     img {
       height: 30px;
     }
   }
+
   // .time__select
 
   &__select {
@@ -898,10 +1063,12 @@ $gray2: #322f2f;
     bottom: 30px;
     width: calc(100% - 10px);
   }
+
   &__container {
     font-size: 10px;
     color: $blue;
   }
+
   &__front {
     width: calc(100% - 60px);
     height: 32px;
@@ -913,29 +1080,22 @@ $gray2: #322f2f;
     align-items: center;
     z-index: 2;
   }
+
   // .time__timer-start
   &__input {
-    max-height: 24px;
     width: 50px;
-    background: $purple;
-    border-radius: 10px;
-    border: none;
-    outline: none;
+
     @media (max-width: 1120px) {
       width: 40px;
     }
-    color: $red;
-    font-weight: 800;
-    &:focus {
-      transition: all 0.3s ease;
-      border: 4px solid $red;
-    }
   }
+
   &__timer-start {
     width: 30px;
     height: 30px;
     border-radius: 50%;
     background: $blue;
+
     img {
       width: 15px;
     }
@@ -960,43 +1120,380 @@ $gray2: #322f2f;
     height: 150px;
     background: $blue;
     border-radius: 10px;
+
     @media (max-width: 425px) {
       right: 50px;
     }
   }
+
   &__grid-cont {
     width: 140px;
     height: 140px;
     display: grid;
     grid-gap: 10px;
     grid-template-columns: repeat(3, 1fr);
+
     div {
       height: 40px;
       width: 40px;
       border-radius: 5px;
       background: $purple;
     }
+
     img {
       width: 30px;
     }
   }
+
   @media (max-width: 950px) {
     &__container {
       flex-direction: column;
+
       p {
         order: 2;
         margin-top: 5px;
       }
     }
+
     &__input {
       order: 1;
       width: 90%;
     }
   }
+
+  // .time__timer
+
+  &__timer {
+    div {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+    }
+
+    display: none;
+  }
+
+  &__stopWatch {}
+
+  // .time__add
+  &__add,
+  &__ok {
+    position: absolute !important;
+    width: 40px;
+    height: 40px;
+    right: 10px;
+    background: $purple;
+
+    img {
+      width: 70%;
+    }
+
+    &:hover {
+      transition: all 0.3s ease;
+      background: $blue;
+    }
+
+    @media (max-width: 860px) {
+      right: -5px;
+    }
+  }
+
+  &__add {
+    top: 20px;
+  }
+
+  // .time__ok
+  &__ok {
+    top: 70px;
+  }
+
+  // .time__control-time
+
+  &__control-time {
+    width: 70%;
+    max-width: 300px;
+    height: 160px;
+    color: $blue;
+    font-size: 35px;
+    border: 3px solid $red;
+    border-radius: 10px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+    }
+  }
+
+  &__num {
+    width: 100%;
+    height: 100%;
+    display: none;
+    overflow: hidden;
+  }
+
+  // .time__col-hours
+
+  &__col-hours {
+    left: 10px;
+  }
+
+  // .time__col-min
+
+  &__col-min {
+    right: 10px;
+  }
+
+  // .time__process2
+
+  &__process2 {
+    width: 90%;
+    height: 170px;
+    margin-top: 20px;
+  }
+
+  // .time__set
+
+  &__set {
+    width: 100%;
+    height: 100px;
+    display: none;
+  }
+
+  // .time__col1
+
+  &__col1 {
+    height: 100%;
+    width: 100px;
+    justify-content: space-around;
+  }
+
+  // .time__way
+
+  &__way {
+    width: 100%;
+    font-size: 10px;
+    margin-top: 0;
+    color: $red;
+
+    p {
+      padding-left: 10px;
+    }
+  }
+
+  // .time__col2
+
+  &__col2 {
+    height: 100%;
+    width: calc(100% - 115px);
+  }
+
+  &__message {
+    margin-top: 20px;
+    width: 100%;
+    color: $blue;
+
+    input {
+      width: calc(100% - 120px);
+    }
+
+    @media (max-width: 980px) {
+      flex-direction: column;
+
+      input {
+        margin-top: 5px;
+        width: 100%;
+      }
+    }
+  }
+
+  // .time__day-type-grid
+
+  &__day-type-grid {
+    div {
+      width: 20px;
+      height: 20px;
+      color: $purple;
+      border: 2px solid $red;
+      font-size: 10px;
+
+      &:hover {
+        color: $red;
+        border: 2px solid $purple;
+      }
+    }
+  }
+
+  // .time__big-input
+
+  &__big-input {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+    font-size: 12px;
+    color: $blue;
+
+    input {
+      width: 100%;
+      max-width: 100px;
+    }
+
+    p {
+      margin-bottom: 5px;
+    }
+
+    display: none;
+  }
+
+  // .time__col-container
+
+  &__col-container {
+    width: 100%;
+    height: 100%;
+    border: 3px solid $purple;
+    border-radius: 10px;
+    font-size: 15px;
+    overflow: hidden;
+    color: $red;
+    justify-content: stretch;
+
+    &>div {
+      width: calc(100% - 10px);
+      height: 56px;
+      border-radius: 10px;
+
+      &>div {
+        background: $blue;
+        border-radius: 10px;
+        width: 100%;
+        height: 46px;
+        justify-content: space-around;
+      }
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $purple;
+      border-radius: 10px;
+    }
+  }
+
+  &__front2 {
+    width: 100%;
+    height: 24px;
+  }
+
+  &__back {
+    margin-top: -3px;
+    width: 98%;
+    color: $black;
+    max-height: 15px;
+    overflow: auto;
+    font-size: 12px;
+    text-shadow: 1px 1px 1px $red;
+  }
+
+  &__fullDate {
+    left: 7px;
+  }
+
+  // .time__data
+  &__data {
+    height: 100%;
+    width: calc(100% - 129px);
+  }
+
+  &__farTime {
+    text-shadow: 3px 3px 3px $black;
+    color: $purple;
+  }
+
+  &__delete {
+    right: 7px;
+    width: 25px;
+    height: 25px;
+    background: $blue;
+
+    img {
+      width: 70%;
+    }
+
+    &:hover {
+      transition: all 0.3s ease;
+      background: $red;
+    }
+  }
+
+  &__list2 {
+    height: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    div {
+      min-width: 20px;
+      height: 20px;
+      background: $purple;
+      font-size: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $purple;
+      border-radius: 10px;
+    }
+  }
 }
+
+.input-style {
+  max-height: 24px;
+  background: #a569bd;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  color: #e74c3c;
+  font-weight: 800;
+
+  &:focus {
+    transition: all 0.3s ease;
+    border: 4px solid #e74c3c;
+  }
+}
+
+.column {
+  height: 100%;
+  width: 40px;
+  font-size: 20px;
+  cursor: grab;
+
+  div {
+    position: relative;
+  }
+}
+
+.radio {
+  min-width: 30px;
+  min-height: 30px;
+  background: #2e86c1;
+  cursor: url(./images/hand.png), default;
+
+  div {
+    transition: all 0.3s ease;
+    opacity: 0;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #273746;
+  }
+
+  &:hover {
+    transition: all 0.3s ease;
+    background: #e74c3c;
+  }
+}
+
 .alert {
-  z-index: 21;
+  z-index: 40;
   display: none;
+
   &__main {
     justify-content: space-around;
     min-width: 260px;
@@ -1009,14 +1506,15 @@ $gray2: #322f2f;
     position: absolute;
     font-size: calc(10px + (20 - 10) * (100vw / 1920));
     @include min(20, 1920);
-
   }
+
   // .alert__img
 
   &__img {
     width: 60px;
     height: 60px;
     background: white;
+
     img {
       width: 40px;
     }
@@ -1033,14 +1531,17 @@ $gray2: #322f2f;
     top: 10px;
     right: 10px;
     cursor: url(./images/hand.png), default;
+
     img {
       width: 30px;
     }
+
     &:hover {
       transition: all 0.3s ease;
       opacity: 0.6;
     }
   }
+
   // .alert__message
   &__message {
     text-align: center;
@@ -1049,18 +1550,39 @@ $gray2: #322f2f;
     font-style: italic;
   }
 }
+.list-grid {
+  width: 100%;
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(20px, 1fr));
+  justify-items: center;
+}
+
 .fixed {
   width: calc(100% - 20px);
   max-width: 450px;
 }
+
 .seePicture {
   position: absolute;
   bottom: 0;
+
   img {
     width: 20px;
   }
 }
+
+.activatedRadio {
+  div {
+    opacity: 1;
+  }
+}
+
 ::-webkit-scrollbar {
+  border-radius: 10px;
+  width: 10px;
+}
+::-webkit-scrollbar-thumb{
   border-radius: 10px;
 }
 .selected-ball {
@@ -1068,35 +1590,384 @@ $gray2: #322f2f;
   transition: all 0.3s ease;
   border: 3px solid #2e86c1;
 }
+
 .hover-circle {
   cursor: url(./images/hand.png), default;
+
   &:hover {
     transition: all 0.3s ease;
     background: #e74c3c;
   }
 }
+
 #margin {
   @media (min-width: 1120px) {
     margin-left: 20px;
   }
 }
+
 .circle {
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
+  cursor: url(./images/hand.png), default;
 }
+
 .animate-alert {
   animation: animate-alert 0.5s linear;
 }
+
 @keyframes animate-alert {
   0% {
     top: -170px;
     transform: perspective(400px) rotateX(60deg);
   }
+
   100% {
     top: 0px;
     transform: perspective(400px) rotateX(0deg);
   }
+}
+
+.up2 {
+  top: -64.5px;
+}
+
+.selectedDay {
+  transition: all 0.3s ease;
+  background: #2e86c1;
+  color: #e74c3c !important;
+}
+
+.width-100 {
+  max-width: 100px;
+}
+
+$purple:#4A235A;
+$yellow:#F9E79F;
+$blue:#7FB3D5;
+$green:#A2D9CE;
+.cube{
+  width: 35px;
+  height: 35px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+  border-radius: 10px;
+  cursor: url(./images/hand.png), default;
+  img{
+    width: 75%;
+  }
+}
+.notes {
+  width: 350px;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 19;
+  display: none;
+  &__main {
+    width: calc(100% - 10px);
+    height: 100%;
+    background: $purple;
+    justify-content: stretch;
+
+  }
+  // .notes__head
+  &__add{
+    background: $blue;
+    &:hover{
+      transition: all 0.3s ease;
+      background: $green;
+    }
+  }
+  &__head {
+    height: 40px;
+    width: calc(100% - 20px);
+    margin-top: 10px;
+    max-width: 410px;
+    align-self: flex-start;
+    left: 10px;
+  }
+
+  // .notes__add
+
+  &__body {
+    width: calc(100% - 20px);
+    margin-top: 10px;
+    max-height: calc(100% - 62px);
+    min-height: 150px;
+    overflow: auto;
+    & > div{
+      margin-top: 10px;
+      width:100%;
+    }
+  }
+
+  // .notes__resize
+
+  &__resize {
+    width: 10px;
+    height: 100%;
+    cursor: col-resize;
+    background: $blue;
+  }
+  &__message{
+    text-align: center;
+    font-size: 25px;
+    margin-top: 40px;
+    color: $yellow;
+    font-style: italic;
+  }
+  &__set-color{
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    background: $blue;
+    cursor: url(./images/hand.png), default;
+    &:hover{
+      transition: all 0.3s ease;
+      background-color: $green;
+    }
+  }
+  &__set-book-name{
+    width: 60%;
+    border-radius: 10px;
+    background: $blue;
+    border: none;
+    outline: none;
+    color: $purple;
+    font-weight: 700;
+    height: 25px;
+    padding-left: 10px;
+    &::placeholder{
+      color: $purple;
+    }
+    &:focus{
+      transition: all 0.3s ease;
+      box-shadow: 3px 3px 3px $green;
+    }
+  }
+		// .notes__front
+
+		&__front {
+      width: 233px;
+      [alt="main"]{
+        height: 35px;
+      }
+      color: $yellow;
+		}
+    &__line1{
+      justify-content: stretch;
+      p{
+        padding-left: 10px;
+        overflow: auto;
+        max-height: 24px;
+        &::-webkit-scrollbar-thumb{
+          background: $green;
+        }
+        &::-webkit-scrollbar{
+          background: $yellow;
+        }
+      }
+    }
+    &__line2{
+      height: 35px;
+      width: 170px;
+      margin-top: 5px;
+      img{
+        width: 20px;
+      }
+    }
+		// .notes__close
+
+		&__close {
+      width: 35px;
+      height: 35px;
+      background: $green;
+      &:hover{
+        transition: all 0.3s ease;
+        background: $blue;
+        img{
+          transition: all 0.3s ease;
+          transform: rotate(180deg);
+        }
+      }
+      display: none;
+		}
+    &__open{
+      display: block;
+      cursor: url(./images/hand.png), default;
+    }
+		// .notes__back
+
+		&__back {
+      margin-top: 3px;
+      height:376px;
+      width:calc(100% - 6px);
+      border-radius: 10px;
+      border: 3px solid $yellow;
+      display: none;
+    }
+    &__info{
+      height: 35px;
+      width:100%;
+      font-size: 10px;
+      color: $green;
+      div {
+        height:100%;
+        border-radius: 10px;
+        padding-top: 5px;
+        justify-content: stretch;
+      }
+      & div:first-child{
+        padding-left: 5px;
+      }
+      & div:last-child{
+        padding-right: 5px;
+      }
+      border-bottom: 3px solid $yellow;
+    }
+    &__fill{
+      height: 45px;
+      width:calc(100% - 10px);
+    }
+    textarea{
+      resize: none;
+      background: $green;
+      border-radius: 5px;
+      width: calc(100% - 50px);
+      color: $blue;
+      font-weight: 700;
+      &:focus{
+        transition: all 0.3s ease;
+        outline: none;
+        border: 2px solid $blue;
+      }
+      &::placeholder{
+        padding-left: 10px;
+        color: $purple;
+      }
+    }
+    &__add-text{
+      width: 30px;
+      height: 30px;
+      background: $green;
+      &:hover{
+        transition: all 0.3s ease;
+        background: $blue;
+      }
+    }
+    &__container{
+      width:100%;
+      height: 270px;
+      border-radius: 10px;
+      background: $blue;
+      overflow: auto;
+      & > div{
+        width:100%;
+        height: 45px;
+        border-radius: 10px;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        position:relative;
+      }
+      &::-webkit-scrollbar{
+        background: $purple;
+        width: 6px;
+      }
+      &::-webkit-scrollbar-thumb{
+        background: $yellow;
+        border-radius: 10px;
+      }
+    }
+      // .notes__insert
+
+      &__insert {
+        color: $blue;
+        height: 35px;
+        width: calc(100% - 20px);
+        background: $purple;
+        border-radius: 10px;
+        &:hover{
+          transition: all 0.6s ease-in-out;
+          background: $green;
+          color: $yellow;
+        }
+      }
+
+      // .notes__text
+
+      &__text {
+        position: relative;
+        left: 5px;
+        font-size: 10px;
+        max-width: calc(100% - 35px);
+        max-height: 24px;
+        overflow: auto;
+
+      }
+      // .notes__delete
+
+      &__delete {
+        width: 25px;
+        height: 25px;
+        background: $blue;
+        right: 5px;
+        opacity: 0.5;
+        &:hover{
+          transition: all 0.3s ease;
+          opacity: 1;
+        }
+        display: none;
+      }
+}
+.scroll{
+  &::-webkit-scrollbar{
+    background: $yellow;
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb{
+    background: $blue;
+    border-radius: 10px;
+  }
+}
+.set{
+  font-size: 14px;
+  color:$blue;
+  font-weight: 700;
+}
+.notes-min-size{
+  min-width: 320px;
+}
+.goLeft{
+  animation: goLeft 0.5s linear;
+}
+@keyframes goLeft{
+  0%{
+    width: 0;
+  }
+  100%{
+    width: 320px;
+  }
+}
+.reversed{
+  transform: rotate(180deg);
+  transition: all 0.5s ease;
+}
+.un-reversed{
+  transform: rotate(0deg);
+  transition: all 0.5s ease;
+}
+.message2{
+  font-size: 20px;
+  color: $purple;
+}
+*::selection{
+  background: #856704;
 }
